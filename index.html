@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les petits plats</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header id="header" class="header">
+        <img src="./assets/logo.png" alt="Logo" />
+    </header>
+
+    <main id="main">
+        <div class="main-block">
+            <form class="search-form">
+                <input class="search-bar" type="text" placeholder="Rechercher une recette" />
+                <button class="search-btn"><span class="fa-solid fa-magnifying-glass"></span></button>
+            </form>
+            <section class="tag-section"></section>
+            <section class="filter-section">
+                <button class="ingredient-btn btn">Ingrédients<i class="fa-solid fa-angle-down"></i></button>
+                <div class="ing-filter filter">
+                    <input class="ing-input" type="text" placeholder="Rechercher un ingrédient"/>
+                    <button><i class="fa-solid fa-angle-up"></i></button>
+                    <div class="ing-list"></div>
+                </div>
+                <button class="apparel-btn btn">Appareils<i class="fa-solid fa-angle-down"></i></button>
+                <div class="app-filter filter">
+                    <input class="app-input" type="text" placeholder="Rechercher un appareil"/>
+                    <button><i class="fa-solid fa-angle-up"></i></button>
+                    <div class="app-list"></div>
+                </div>
+                <button class="ustensils-btn btn">Ustensiles<i class="fa-solid fa-angle-down"></i></button>
+                <div class="ust-filter filter">
+                    <input class="ust-input" type="text" placeholder="Rechercher un ustensile"/>
+                    <button><i class="fa-solid fa-angle-up"></i></button>
+                    <div class="ust-list"></div>
+                </div>
+            </section>
+            <section class="recipe-section"></section>
+        </div>
+    </main>
+
+    <script src="/scripts/factory/recipe.js"></script>
+</body>
+</html>

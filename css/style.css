@@ -108,7 +108,7 @@ main {
 .ingredient-btn {
   background-color: #3282f7;
 }
-.apparel-btn {
+.appliance-btn {
   background-color: #68d9a4;
 }
 .ustensils-btn {
@@ -116,6 +116,7 @@ main {
 }
 .filter {
   margin-top: 15px;
+  margin-right: 25px;
   border-radius: 5px;
   margin-bottom: 15px;
   position: relative;

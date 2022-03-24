@@ -4,7 +4,7 @@ async function search() {
     const { recipes } = await getRecipes();
     console.log("recipe searchjs", recipes)
 
-    input.addEventListener("change", () => {
+    input.addEventListener("input", () => {
         if(input.value.length <3) return
         else {
             //Filtering recipes

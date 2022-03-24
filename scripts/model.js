@@ -1,26 +1,59 @@
-export class Recipe {
+class Recipe {
     constructor(data) {
+        this.id = data.id;
         this.name = data.name;
-        this.description = data.description
-        this.time = data.time
-    }
+        this.description = data.description;
+        this.time = data.time;
+        this.ingredients = data.ingredients;
+        this.ustensils = data.ustensils;
+    };
     
     createCard() {
-        return `
-            <article class="recipe">
-                <div class="photo-recipe"></div>
-                <div class="infos-recipe">
-                    <div class="title-div">
-                        <h2 class="name-recipe">${this.name}</h2>
-                        <span class="duration">
-                            <i class="fa-solid fa-clock"></i>
-                            ${this.time}
-                        </span>
-                    </div>
-                </div>
-            </article>
-        `
+        const article = document.createElement("article");
+        const div = document.createElement("div");
+        const infos = document.createElement("div");
+        const titleDiv = document.createElement("div");
+        const title = document.createElement("h2");
+        const duration = document.createElement("span");
+        const recipe = document.createElement("div");
+        const ingredientsDiv = document.createElement("div");
+        const instructions = document.createElement("p");
+
+        article.classList.add("recipe");
+        div.classList.add("photo-recipe");
+        infos.classList.add("infos-recipe");
+        titleDiv.classList.add("title-div")
+        title.classList.add("name-recipe");
+        duration.classList.add("duration");
+        recipe.classList.add("more-infos");
+        ingredientsDiv.classList.add("ingredients");
+        instructions.classList.add("instructions");
+
+        article.appendChild(div);
+        article.appendChild(infos);
+        infos.appendChild(titleDiv);
+        titleDiv.appendChild(title)
+        titleDiv.appendChild(duration)
+        infos.appendChild(recipe);
+        recipe.appendChild(ingredientsDiv);
+        recipe.appendChild(instructions);
+
+        this.ingredients.forEach((ingredient) => {
+            const singleIngredient = document.createElement("p");
+            const spanIngredient = document.createElement("span");
+            ingredientsDiv.appendChild(singleIngredient);
+            if(!ingredient.quantity && !ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}</span>`
+            else if(!ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity
+            else singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity + " " + ingredient.unit + ""
+        })
+
+        title.textContent = this.name;
+        duration.innerHTML = '<i class="fa-solid fa-clock"></i>' + this.time + " min"
+        instructions.textContent = this.description;
+        return article;
     }
 }
 
-const recipe = new Recipe()
+class Tag {
+    
+}

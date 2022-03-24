@@ -20,7 +20,6 @@ async function init() {
 
 function recipeFactory(data) {
     const {name, ingredients, time, description} = data
-    //console.log(data);
     function getRecipeCardDOM() {
         const article = document.createElement("article");
         const div = document.createElement("div");

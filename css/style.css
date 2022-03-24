@@ -31,7 +31,7 @@ main {
   width: 100%;
   margin-top: 17px;
 }
-.search-form {
+.search-box {
   position: relative;
   display: flex;
   align-items: center;

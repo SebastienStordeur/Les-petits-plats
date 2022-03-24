@@ -20,7 +20,7 @@ async function getFilters() {
     const ingredients = [];
     const appliances = [];
     const ustensils = [];
-    console.log(recipes)
+    //console.log(recipes)
     for(let i=0; i<recipes.length; i++) {
         if(!appliances.includes(recipes[i].appliance)) {
             appliances.push(recipes[i].appliance)

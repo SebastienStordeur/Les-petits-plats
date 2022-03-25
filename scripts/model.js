@@ -55,5 +55,16 @@ class Recipe {
 }
 
 class Tag {
-    
+    constructor(ingredients, appliances, ustensils) {
+        this.ingredients = ingredients;
+        this.appliances = appliances;
+        this.ustensils = ustensils;
+    }
+
+    createIngredient() {
+        const ingredient = document.createElement("span");
+        const ustensil = document.createElement("span");
+        const appliance = document.createElement("span");
+        return ingredient, ustensil, appliance;
+    }
 }

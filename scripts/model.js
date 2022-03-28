@@ -61,10 +61,11 @@ class Tag {
         this.ustensils = ustensils;
     }
 
-    createIngredient() {
+    createList() {
         const ingredient = document.createElement("span");
         const ustensil = document.createElement("span");
         const appliance = document.createElement("span");
+
         return ingredient, ustensil, appliance;
     }
 }

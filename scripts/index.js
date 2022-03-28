@@ -16,7 +16,9 @@ function createRecipeCard(recipes) {
 
 async function init() {
     const { recipes } = await getRecipes();
+/*     const { ingredients, appliances, ustensils } = await createArrays() */
     createRecipeCard(recipes);
+    /* attributeItems() */
     createArrays(recipes)
     mainInputFiltering(recipes)
 };

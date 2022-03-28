@@ -6,7 +6,6 @@ function openList() {
     button.addEventListener("click", () => {
         button.nextElementSibling.style.display = "block"
         button.style.display = "none"
-
     })
   })
 }
@@ -27,17 +26,23 @@ async function createArrays(recipes) {
           if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
       })
   }
-  return { ingredients: ingredients, appliances: appliances, ustensils: ustensils}
+  return ({ ingredients: ingredients, appliances: appliances, ustensils: ustensils})
 }
 
 function mainInputFiltering(recipes) {
   input.addEventListener("input", () => {
-    if(input.value.length < 3) return
+    if(input.value.length < 3) {
+      recipeSection.innerHTML = "";
+      createRecipeCard(recipes)
+      return recipes
+    }
     else {
       //Filtering recipes
       const results = recipes.filter(recipe => {
         return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || recipe.description.toLowerCase().includes(input.value.toLowerCase())
       })
+      recipeSection.innerHTML = "";
+      createRecipeCard(results)
       console.log(results)
     }
   })

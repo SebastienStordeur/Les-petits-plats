@@ -54,18 +54,19 @@ class Recipe {
     }
 }
 
-class Tag {
-    constructor(ingredients, appliances, ustensils) {
-        this.ingredients = ingredients;
-        this.appliances = appliances;
-        this.ustensils = ustensils;
+class Element {
+    constructor(ustensils, appliances, ingredients) {
+        this.ustensils = ustensils.ustensils;
+        this.ingredients = ingredients.ingredients;
+        this.appliances = appliances.appliance;
     }
-
-    createList() {
+    
+    createElement() {
         const ingredient = document.createElement("span");
         const ustensil = document.createElement("span");
         const appliance = document.createElement("span");
-
-        return ingredient, ustensil, appliance;
+        this.ustensils.forEach(ustensil => {
+            console.log(ustensil)
+        })
     }
 }

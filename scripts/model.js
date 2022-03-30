@@ -40,7 +40,6 @@ class Recipe {
 
         this.ingredients.forEach((ingredient) => {
             const singleIngredient = document.createElement("p");
-            const spanIngredient = document.createElement("span");
             ingredientsDiv.appendChild(singleIngredient);
             if(!ingredient.quantity && !ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}</span>`
             else if(!ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity
@@ -54,19 +53,20 @@ class Recipe {
     }
 }
 
-class Element {
+/* class Element {
     constructor(ustensils, appliances, ingredients) {
         this.ustensils = ustensils.ustensils;
-        this.ingredients = ingredients.ingredients;
-        this.appliances = appliances.appliance;
+        this.ingredients = ingredients
+        this.appliances = appliances
     }
     
     createElement() {
         const ingredient = document.createElement("span");
         const ustensil = document.createElement("span");
         const appliance = document.createElement("span");
-        this.ustensils.forEach(ustensil => {
-            console.log(ustensil)
+        console.log(appliances)
+        this.appliances.forEach((appliance) => {
+            appList.appendChild(appliance)
         })
     }
-}
+}  */

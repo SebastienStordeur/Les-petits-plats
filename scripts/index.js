@@ -1,6 +1,8 @@
 const recipeSection = document.querySelector(".recipe-section");
+const tagSection = document.querySelector(".tag-section");
 const ingList = document.querySelector(".ing-list");
 const appList = document.querySelector(".app-list")
+const ustList = document.querySelector(".ust-list");
 
 async function getRecipes() {
     const response = await (await fetch("../../data/recipes.json")).json();
@@ -16,10 +18,11 @@ function createRecipeCard(recipes) {
 
 async function init() {
     const { recipes } = await getRecipes();
-/*     const { ingredients, appliances, ustensils } = await createArrays() */
+    const { ingredients, appliances, ustensils } = await createArrays();
     createRecipeCard(recipes);
-    /* attributeItems() */
-    createArrays(recipes)
+    createArrays()
+    attributeItems(ingredients, appliances, ustensils)
+
     mainInputFiltering(recipes)
 };
 

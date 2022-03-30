@@ -139,22 +139,46 @@ main {
 }
 .ing-filter {
   background-color: #3282f7;
+  width: 55%;
+  max-height: 397px;
+  overflow: hidden;
 }
 .app-filter button {
   background-color: #68d9a4;
 }
 .app-filter {
   background-color: #68d9a4;
+  width: 55%;
+  max-height: 397px;
 }
 .ust-filter {
   background-color: #ed6454;
+  width: 55%;
+  max-height: 397px;
 }
 .ust-filter button {
   background-color: #ed6454;
 }
+.ing-list,
+.app-list,
+.ust-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-left: 19px;
+}
+.ing-list span,
+.app-list span,
+.ust-list span {
+  height: 22px;
+  margin: 5px 0;
+  color: #ffffff;
+  font-size: 18px;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+}
 .filter input {
   height: 69px;
-  padding-left: 6px;
+  padding-left: 19px;
   border: none;
   outline: none;
   color: #ffffff;

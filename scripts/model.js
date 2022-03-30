@@ -53,20 +53,15 @@ class Recipe {
     }
 }
 
-/* class Element {
-    constructor(ustensils, appliances, ingredients) {
-        this.ustensils = ustensils.ustensils;
-        this.ingredients = ingredients
-        this.appliances = appliances
+class Tag {
+    constructor(data) {
+        this.data = data
     }
-    
-    createElement() {
-        const ingredient = document.createElement("span");
-        const ustensil = document.createElement("span");
-        const appliance = document.createElement("span");
-        console.log(appliances)
-        this.appliances.forEach((appliance) => {
-            appList.appendChild(appliance)
-        })
+
+    createTag() {
+        const div = document.createElement("div");
+        div.classList.add("tag");
+        tagSection.appendChild(div)
+        div.textContent = ""
     }
-}  */
+}

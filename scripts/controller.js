@@ -1,3 +1,7 @@
+class Controller {
+	
+}
+
 const filterBtn = document.querySelectorAll(".btn");
 const input = document.querySelector(".search-bar");
 
@@ -9,6 +13,7 @@ function openList() {
     })
   })
 }
+
 
 //Create ingredients, appliances and ustensils arrays
 /* function createArrays(recipes) {
@@ -39,7 +44,6 @@ async function createArrays() {
 	const ingredients = [];
 	const appliances = [];
 	const ustensils = [];
-	console.log("recipes",recipes)
 	for(let i=0; i<recipes.length; i++) {
 		if(!appliances.includes(recipes[i].appliance)) appliances.push(recipes[i].appliance)
 		
@@ -76,7 +80,11 @@ function attributeItems(ingredients, ustensils, appliances) {
 }
 
 //Filtering with main input
-function mainInputFiltering(recipes) {
+async function mainInputFiltering(recipes) {
+	const { ingredients, ustensils, appliances } = await createArrays()
+	console.log("ustensils", ustensils)
+	console.log(ingredients)
+	console.log("appareils", appliances)
 	input.addEventListener("input", () => {
 		if(input.value.length < 3) {
 			recipeSection.innerHTML = "";
@@ -89,6 +97,19 @@ function mainInputFiltering(recipes) {
 				recipe.description.toLowerCase().includes(input.value.toLowerCase()) /* || 
 				recipe.ingredients.toLowerCase().includes(input.value.toLowerCase()); */
 			});
+			console.log("resultats", results)
+/* 			const filteredAppliances = appliances.filter(appliance => {
+				appliance.includes(results.forEach((result) => {
+					return result.appliance
+				}))
+			})
+			const filteredIngredients = ingredients.filter(ingredient => {
+				ingredient.includes(results.forEach(result => {
+					return result.ingredient
+				}))
+			}) */
+			console.log("filtre ingredient", filteredIngredients)
+			console.log("filtre apparaeil", filteredAppliances)
 			recipeSection.innerHTML = "";
 			createRecipeCard(results);
 			console.log(results);
@@ -96,5 +117,23 @@ function mainInputFiltering(recipes) {
 		}
 	});
 }
+
+async function filterCategories(ingredients, appliances, ustensils) {
+	const appInput = document.querySelector(".app-input")
+	appInput.addEventListener("input", () => {
+		const results = appliances.filter(appliance => {
+			return appliance.toLowerCase().includes(appInput.value.toLowerCase())
+		})
+		appList.innerHTML = ""
+		attributeItems(results)
+	})
+}
+
+
+
+/* function filteringByTag () {
+
+} */
+
 
 openList()

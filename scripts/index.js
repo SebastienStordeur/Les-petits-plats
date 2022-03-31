@@ -21,9 +21,10 @@ async function init() {
     const { ingredients, appliances, ustensils } = await createArrays();
     createRecipeCard(recipes);
     createArrays()
-    attributeItems(ingredients, appliances, ustensils)
+    attributeItems(ingredients, ustensils, appliances)
 
     mainInputFiltering(recipes)
+    filterCategories(ingredients, ustensils, appliances)
 };
 
 init();

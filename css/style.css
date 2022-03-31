@@ -224,6 +224,7 @@ main {
   margin: auto;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 50px;
+  overflow: hidden;
 }
 .recipe {
   width: 100%;

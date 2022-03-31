@@ -1,3 +1,7 @@
+class Model {
+    
+}
+
 class Recipe {
     constructor(data) {
         this.id = data.id;
@@ -7,7 +11,7 @@ class Recipe {
         this.ingredients = data.ingredients;
         this.ustensils = data.ustensils;
     };
-    
+    //To view
     createCard() {
         const article = document.createElement("article");
         const div = document.createElement("div");
@@ -54,14 +58,28 @@ class Recipe {
 }
 
 class Tag {
-    constructor(data) {
-        this.data = data
+    constructor(ingredients, appliances, ustensils) {
+        this.ingredients = ingredients;
+        this.appliances = appliances;
+        this.ustensils = ustensils;
     }
 
-    createTag() {
-        const div = document.createElement("div");
-        div.classList.add("tag");
-        tagSection.appendChild(div)
-        div.textContent = ""
+//=> VIEW
+    createIngTag() {
+        const span = document.createElement("span");
+        ingList.appendChild(span)
+        span.textContent = this.ingredients.ingredient
+    }
+
+    createAppTag() {
+        const span = document.createElement("span");
+        appList.appendChild(span)
+        span.textContent = this.appliances.appliances;
+    }
+
+    createUstTag() {
+        const span = document.createElement("span");
+        ustList.appendChild(span);
+        span.textContent = this.ustensils.ustensils
     }
 }

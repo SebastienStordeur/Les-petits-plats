@@ -1,13 +1,19 @@
 class Model {
-    constructor() {
-        this.recipes = await (await fetch("../data/recipes.json")).json()
+    constructor(recipes) {
+        this.id = recipes.id;
+        this.name = recipes.name;
+        this.description = recipes.description;
+        this.time = recipes.time;
+        this.ingredients = recipes.ingredients;
+        this.ustensils = recipes.ustensils;
         //this.recipes = await (await fetch("../data/recipes.json")).json().recipes
     }
-    
-    test() {
-      console.log(this.recipes)  
-    }
-    
+
+/*     getRecipes() {
+        const response = await (await fetch("../../data/recipes.json")).json();
+        const recipes = response.recipes;
+        return ({ recipes: [...recipes]});
+    } */
 
 }
 

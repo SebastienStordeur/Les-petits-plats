@@ -4,13 +4,18 @@ class Controller {
 		this.view = view
 
 		//initial recipes
-		this.default(this.model.recipe)
+		/* this.default(this.model.recipe) */
 		
 	}
 
-	default = recipes => {
-		this.view.createCard(recipes)
+	filterMainInput() {
+		input.addEventListener("input", this.view.displayFilter())
 	}
+
+
+/* 	default = recipes => {
+		this.view.createCard(recipes)
+	} */
 	//Main input listener
 	
 

@@ -1,10 +1,10 @@
-const recipeSection = document.querySelector(".recipe-section");
+/* const recipeSection = document.querySelector(".recipe-section");
 const tagSection = document.querySelector(".tag-section");
 const ingList = document.querySelector(".ing-list");
 const appList = document.querySelector(".app-list")
-const ustList = document.querySelector(".ust-list");
+const ustList = document.querySelector(".ust-list"); */
 
-async function getRecipes() {
+/* async function getRecipes() {
     const response = await (await fetch("../../data/recipes.json")).json();
     const recipes = response.recipes;
     return ({ recipes: [...recipes]});
@@ -27,4 +27,9 @@ async function init() {
     filterCategories(ingredients, ustensils, appliances)
 };
 
-init();
+init(); */
+
+
+const app = new Controller(new Model(), new View());
+
+console.log(this.Model.test())

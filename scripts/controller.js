@@ -1,5 +1,19 @@
 class Controller {
+	constructor(model, view) {
+		this.model = model
+		this.view = view
+
+		//initial recipes
+		this.default(this.model.recipe)
+		
+	}
+
+	default = recipes => {
+		this.view.createCard(recipes)
+	}
+	//Main input listener
 	
+
 }
 
 const filterBtn = document.querySelectorAll(".btn");

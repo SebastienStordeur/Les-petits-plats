@@ -5,3 +5,5 @@ const appList = document.querySelector(".app-list")
 const ustList = document.querySelector(".ust-list");
 const filterBtn = document.querySelectorAll(".btn");
 const input = document.querySelector(".search-bar");
+
+const advancedInput = document.querySelectorAll(".input");

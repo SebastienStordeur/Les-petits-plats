@@ -2,7 +2,7 @@
 async function mainInputFiltering(recipes) {
 	const { ingredients, ustensils, appliances } = await createArrays()
 	console.log("ustensils", ustensils)
-	console.log(ingredients)
+	console.log("ingredients", ingredients)
 	console.log("appareils", appliances)
 	input.addEventListener("input", () => {
 		if(input.value.length < 3) {
@@ -11,28 +11,23 @@ async function mainInputFiltering(recipes) {
 			return recipes;
 		} 	else {
 			//Filtering recipes
-			const results = recipes.filter(recipe => {
+			const filteredRecipes = recipes.filter(recipe => {
 				return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
 				recipe.description.toLowerCase().includes(input.value.toLowerCase()) /* || 
 				recipe.ingredients.toLowerCase().includes(input.value.toLowerCase()); */
 			});
-			console.log("resultats", results)
-/* 			const filteredAppliances = appliances.filter(appliance => {
-				appliance.includes(results.forEach((result) => {
-					return result.appliance
-				}))
-			})
-			const filteredIngredients = ingredients.filter(ingredient => {
-				ingredient.includes(results.forEach(result => {
-					return result.ingredient
-				}))
-			}) */
-/* 			console.log("filtre ingredient", filteredIngredients)
-			console.log("filtre apparaeil", filteredAppliances) */
+			console.log("resultats", filteredRecipes)
+
+            const filteredAppliances = appliances.filter(appliance => {
+                return filteredRecipes.forEach((results) => {
+                    return results.appliance
+                })
+            }) //not wokring
+
+            console.log(filteredAppliances)
 			recipeSection.innerHTML = "";
-			createRecipeCard(results);
-			console.log(results);
-			return results;
+			createRecipeCard(filteredRecipes);
+			return filteredRecipes;
 		}
 	});
 }
@@ -62,6 +57,7 @@ async function createArrays() {
 
 
 
+
 function attributeItems(ingredients, ustensils, appliances) {
 	//Attributing ingredients to the div (for tag and advance search)
 	ingredients.forEach(ingredient => {
@@ -81,4 +77,24 @@ function attributeItems(ingredients, ustensils, appliances) {
 		appList.appendChild(applianceSpan);
 		applianceSpan.textContent = appliance;
 	})
+}
+
+
+function advancedInputFiltering(ingredients, appliances, ustensils) {
+    advancedInput.forEach((input, index) => {
+        input.addEventListener("input", () => {
+            const filteredAppliances = appliances.filter(appliance => {
+                return appliance.toLowerCase().includes(input.value.toLowerCase());
+            })
+            const filteredIngredients = ingredients.filter(ingredient => {
+                return ingredient.toLowerCase().includes(input.value.toLowerCase())
+            })
+            const filteredUstensils = ustensils.filter(ustensil => {
+                return ustensil.toLowerCase().includes(input.value.toLowerCase())
+            })
+            console.log("filtered appliance",filteredAppliances)
+            console.log("filtered ingrediens", filteredIngredients)
+            console.log("filtered ustensils", filteredUstensils)
+        })
+    })
 }

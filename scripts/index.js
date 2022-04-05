@@ -10,12 +10,13 @@ async function init() {
     const { recipes } = await getRecipes();
     const { ingredients, appliances, ustensils } = await createArrays();
     createRecipeCard(recipes);
-
+    createArrays();
     attributeItems(ingredients, ustensils, appliances);
 
-    mainInputFiltering(recipes)
-/*     filterCategories(ingredients, ustensils, appliances) */
-    openList()
+    mainInputFiltering(recipes);
+    advancedInputFiltering(ingredients, appliances, ustensils);
+
+    openList();
 };
 
 init();

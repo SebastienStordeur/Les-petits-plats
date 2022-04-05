@@ -1,7 +1,13 @@
-class View {
-    constructor() {}
-
-    //create recipe cards
+class Recipe {
+    constructor(data) {
+        this.id = data.id;
+        this.name = data.name;
+        this.description = data.description;
+        this.time = data.time;
+        this.ingredients = data.ingredients;
+        this.ustensils = data.ustensils;
+    };
+    
     createCard() {
         const article = document.createElement("article");
         const div = document.createElement("div");
@@ -32,37 +38,24 @@ class View {
         recipe.appendChild(ingredientsDiv);
         recipe.appendChild(instructions);
 
-/*         this.ingredients.forEach((ingredient) => {
+        this.ingredients.forEach((ingredient) => {
             const singleIngredient = document.createElement("p");
             ingredientsDiv.appendChild(singleIngredient);
             if(!ingredient.quantity && !ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}</span>`
             else if(!ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity
             else singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity + " " + ingredient.unit + ""
-        }) */
-        
+        })
+
         title.textContent = this.name;
         duration.innerHTML = '<i class="fa-solid fa-clock"></i>' + this.time + " min"
         instructions.textContent = this.description;
         return article;
     }
-
-    displayAll(recipes) {
-        console.log(recipes)
-        recipes.forEach(recipe => {
-            recipeSection.appendChild(this.createCard(recipe))
-        })
-    }
-
-    displayFilter() {
-        var filteredRecipe = [];
-        if(input.ariaValueMax.length < 3) {
-            this.displayAll(recipes)
-            return recipes
-        }   else {
-            filteredRecipe = recipes.filter(recipe => {
-                return recipe.name.toLowerCase().includes(input.value.toLowerCase())
-            })
-        }
-    }
-
 }
+
+//Create a card for each recipe
+function createRecipeCard(recipes) {
+    recipes.forEach((recipe) => {
+        recipeSection.appendChild(new Recipe(recipe).createCard()); 
+    });
+};

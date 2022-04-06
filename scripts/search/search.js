@@ -60,7 +60,10 @@ async function createArrays() {
 
 function attributeItems(ingredients, ustensils, appliances) {
 	//Attributing ingredients to the div (for tag and advance search)
-	ingredients.forEach(ingredient => {
+
+/* 		lists[0].appendChild(ingredientSpan)
+		ingredientSpan.textContent = ingredient */
+ 	ingredients.forEach(ingredient => {
 		const ingredientSpan = document.createElement("span");
 		ingList.appendChild(ingredientSpan);
 		ingredientSpan.textContent = ingredient;
@@ -81,7 +84,24 @@ function attributeItems(ingredients, ustensils, appliances) {
 
 
 function advancedInputFiltering(ingredients, appliances, ustensils) {
-    advancedInput.forEach((input, index) => {
+	for(let i = 0; i < advancedInput.length; i++) {
+		advancedInput[i].addEventListener("input", () => {
+			const filteredIngredients = ingredients.filter(ingredient => {
+                return ingredient.toLowerCase().includes(advancedInput[0].value.toLowerCase())
+            })
+ 			const filteredAppliances = appliances.filter(appliance => {
+                return appliance.toLowerCase().includes(advancedInput[1].value.toLowerCase());
+            })
+ 			const filteredUstensils = ustensils.filter(ustensil => {
+                return ustensil.toLowerCase().includes(advancedInput[2].value.toLowerCase())
+            })
+            console.log("filtered appliance",filteredAppliances)
+            console.log("filtered ingrediens", filteredIngredients)
+            console.log("filtered ustensils", filteredUstensils)
+			return filteredIngredients || filteredAppliances || filteredUstensils
+		})
+	}
+/*     advancedInput.forEach((input, index) => {
         input.addEventListener("input", () => {
             const filteredAppliances = appliances.filter(appliance => {
                 return appliance.toLowerCase().includes(input.value.toLowerCase());
@@ -96,5 +116,5 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
             console.log("filtered ingrediens", filteredIngredients)
             console.log("filtered ustensils", filteredUstensils)
         })
-    })
+    }) */
 }

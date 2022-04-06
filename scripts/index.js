@@ -17,6 +17,7 @@ async function init() {
     mainInputFiltering(recipes);
     advancedInputFiltering(ingredients, appliances, ustensils);
     openList();
+    createTag()
 };
 
 init();

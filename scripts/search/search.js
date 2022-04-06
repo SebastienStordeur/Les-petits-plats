@@ -1,9 +1,6 @@
 //Filtering with main input
 async function mainInputFiltering(recipes) {
 	const { ingredients, ustensils, appliances } = await createArrays()
-	console.log("ustensils", ustensils)
-	console.log("ingredients", ingredients)
-	console.log("appareils", appliances)
 	input.addEventListener("input", () => {
 		if(input.value.length < 3) {
 			recipeSection.innerHTML = "";
@@ -33,7 +30,7 @@ async function mainInputFiltering(recipes) {
 }
 
 //Create ingredients, ustensils and appliances arrays
-async function createArrays() {
+ async function createArrays() {
 	const response = await (await fetch("../../data/recipes.json")).json();
 	const recipes = response.recipes;
 	const ingredients = [];
@@ -53,16 +50,9 @@ async function createArrays() {
   	return ({ ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] })
 }
 
-
-
-
-
-
+//fill lists with ingredients ustensils and appliances
 function attributeItems(ingredients, ustensils, appliances) {
 	//Attributing ingredients to the div (for tag and advance search)
-
-/* 		lists[0].appendChild(ingredientSpan)
-		ingredientSpan.textContent = ingredient */
  	ingredients.forEach(ingredient => {
 		const ingredientSpan = document.createElement("span");
 		ingList.appendChild(ingredientSpan);
@@ -95,26 +85,37 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
  			const filteredUstensils = ustensils.filter(ustensil => {
                 return ustensil.toLowerCase().includes(advancedInput[2].value.toLowerCase())
             })
+			ingList.innerHTML = ""
+			for(let j=0; j<filteredIngredients.length; j++) {
+				const ingredientSpan = document.createElement("span");
+				ingList.appendChild(ingredientSpan)
+				ingredientSpan.textContent = filteredIngredients[j]
+			} //split function
+/* 			filteredIngredients.forEach(ingredient => {
+				ingList.appendChild(ingredientSpan)
+				ingredientSpan.textContent = ingredient
+			}) */ //not working
             console.log("filtered appliance",filteredAppliances)
             console.log("filtered ingrediens", filteredIngredients)
             console.log("filtered ustensils", filteredUstensils)
 			return filteredIngredients || filteredAppliances || filteredUstensils
 		})
 	}
-/*     advancedInput.forEach((input, index) => {
-        input.addEventListener("input", () => {
-            const filteredAppliances = appliances.filter(appliance => {
-                return appliance.toLowerCase().includes(input.value.toLowerCase());
-            })
-            const filteredIngredients = ingredients.filter(ingredient => {
-                return ingredient.toLowerCase().includes(input.value.toLowerCase())
-            })
-            const filteredUstensils = ustensils.filter(ustensil => {
-                return ustensil.toLowerCase().includes(input.value.toLowerCase())
-            })
-            console.log("filtered appliance",filteredAppliances)
-            console.log("filtered ingrediens", filteredIngredients)
-            console.log("filtered ustensils", filteredUstensils)
-        })
-    }) */
+}
+
+function createTag() {
+	for(let i=0; i<ingredientSpans.length; i++) {
+		ingredientSpans[i].addEventListener("click", () => {
+			const tag = document.createElement("span")
+			tag.classList.add("tag");
+			tagSection.appendChild(tag)
+			tag.textContent = ingredientSpans[i].innerHTML
+		})
+	}
+}
+
+
+function search() {
+
+	//liste de fonctions 
 }

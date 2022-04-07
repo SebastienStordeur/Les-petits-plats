@@ -11,13 +11,18 @@ async function init() {
     const { ingredients, appliances, ustensils } = await createArrays();
 
 
-    createRecipeCard(recipes);
-    createArrays();
-    attributeItems(ingredients, ustensils, appliances);
-    mainInputFiltering(recipes);
-    advancedInputFiltering(ingredients, appliances, ustensils);
+    createRecipeCard(recipes); //recipes 
+    createArrays(); //tableaux de base
+    attributeItems(ingredients, ustensils, appliances); //attribution basique
+
+    
+    mainInputFiltering(recipes); //recipes ou liste de recette maj
+    advancedInputFiltering(ingredients, appliances, ustensils); //ou listes maj
     openList();
+    //closelist
     createTag()
+
+    //search()
 };
 
 init();

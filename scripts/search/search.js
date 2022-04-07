@@ -1,6 +1,6 @@
 //Filtering with main input
 async function mainInputFiltering(recipes) {
-	const { ingredients, ustensils, appliances } = await createArrays()
+	/* const { ingredients, ustensils, appliances } = await createArrays() */
 	input.addEventListener("input", () => {
 		if(input.value.length < 3) {
 			recipeSection.innerHTML = "";
@@ -15,13 +15,10 @@ async function mainInputFiltering(recipes) {
 			});
 			console.log("resultats", filteredRecipes)
 
-            const filteredAppliances = appliances.filter(appliance => {
-                return filteredRecipes.forEach((results) => {
-                    return results.appliance
-                })
-            }) //not wokring
 
-            console.log(filteredAppliances)
+
+			arrays(filteredRecipes)
+			//attribute function () attributeItems(tableaux filtrés)
 			recipeSection.innerHTML = "";
 			createRecipeCard(filteredRecipes);
 			return filteredRecipes;
@@ -29,13 +26,38 @@ async function mainInputFiltering(recipes) {
 	});
 }
 
+
+
+function arrays(filteredRecipes) {
+	var ingredients = [];
+	var ustensils = [];
+	var appliances = [];
+	console.log(appliances)
+	for(let i = 0; i<filteredRecipes.length; i++) {
+		if(!appliances.includes(filteredRecipes[i].appliance)) appliances.push(filteredRecipes[i].appliance)
+	
+		filteredRecipes[i].ustensils.forEach((ustensil) => {
+			if(!ustensils.includes(ustensil)) ustensils.push(ustensil)
+		})
+
+		filteredRecipes[i].ingredients.forEach((ingredient) => {
+			if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
+		})
+	}
+	console.log("new array aplpiance", appliances)
+	console.log("new ingredients array", ingredients)
+	console.log("new ustensisl array", ustensils)
+
+	return (ingredients, ustensils, appliances)
+ }
+
 //Create ingredients, ustensils and appliances arrays
  async function createArrays() {
 	const response = await (await fetch("../../data/recipes.json")).json();
 	const recipes = response.recipes;
-	const ingredients = [];
-	const appliances = [];
-	const ustensils = [];
+	var ingredients = [];
+	var appliances = [];
+	var ustensils = [];
 	for(let i=0; i<recipes.length; i++) {
 		if(!appliances.includes(recipes[i].appliance)) appliances.push(recipes[i].appliance)
 		
@@ -103,6 +125,9 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
 	}
 }
 
+
+
+//only ingredients 
 function createTag() {
 	for(let i=0; i<ingredientSpans.length; i++) {
 		ingredientSpans[i].addEventListener("click", () => {
@@ -114,8 +139,33 @@ function createTag() {
 	}
 }
 
-
+//not active yet
 function search() {
-
-	//liste de fonctions 
+	const input = document.querySelector(".search-bar");
+	//liste de fonctions
+	//main input
+	async function filterMainInput(recipes) {
+		input.addEventListener("input", () => {
+			if(input.value.length < 3) {
+				recipeSection.innerHTML = "";
+				createRecipeCard(recipes);
+				return recipes;
+			} 	else {
+				//Filtering recipes
+				const filteredRecipes = recipes.filter(recipe => {
+					return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
+					recipe.description.toLowerCase().includes(input.value.toLowerCase()) /* || 
+					recipe.ingredients.toLowerCase().includes(input.value.toLowerCase()); */
+				});
+				console.log("resultats", filteredRecipes)
+	
+				recipeSection.innerHTML = "";
+				createRecipeCard(filteredRecipes);
+				return filteredRecipes;
+			}
+		});
+	}
+	//tag
+	//filtrer les ingredients et autres avec leur input
+	//updates
 }

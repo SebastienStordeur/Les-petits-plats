@@ -7,13 +7,14 @@ class Model {
         this.ingredients = recipes.ingredients;
         this.ustensils = recipes.ustensils;
         //this.recipes = await (await fetch("../data/recipes.json")).json().recipes
+        this.recipe = this.getRecipes()
     }
 
-/*     getRecipes() {
+    getRecipes() {
         const response = await (await fetch("../../data/recipes.json")).json();
         const recipes = response.recipes;
         return ({ recipes: [...recipes]});
-    } */
+    }
 
 }
 

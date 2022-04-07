@@ -1,7 +1,6 @@
 //Filtering with main input
 async function mainInputFiltering(recipes) {
-	/* const { ingredients, ustensils, appliances } = await createArrays() */
-	input.addEventListener("input", () => {
+	input.addEventListener("input", async () => {
 		if(input.value.length < 3) {
 			recipeSection.innerHTML = "";
 			createRecipeCard(recipes);
@@ -48,13 +47,14 @@ function arrays(filteredRecipes) {
 	console.log("new ingredients array", ingredients)
 	console.log("new ustensisl array", ustensils)
 
+	attributeItems(ingredients, appliances, ustensils)
+
 	return (ingredients, ustensils, appliances)
  }
 
 //Create ingredients, ustensils and appliances arrays
- async function createArrays() {
-	const response = await (await fetch("../../data/recipes.json")).json();
-	const recipes = response.recipes;
+function createArrays(recipes) {
+
 	var ingredients = [];
 	var appliances = [];
 	var ustensils = [];
@@ -74,6 +74,9 @@ function arrays(filteredRecipes) {
 
 //fill lists with ingredients ustensils and appliances
 function attributeItems(ingredients, ustensils, appliances) {
+	ingList.innerHTML = ""
+	appList.innerHTML = ""
+	ustList.innerHTML = ""
 	//Attributing ingredients to the div (for tag and advance search)
  	ingredients.forEach(ingredient => {
 		const ingredientSpan = document.createElement("span");

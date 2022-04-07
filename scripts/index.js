@@ -8,11 +8,11 @@ async function getRecipes() {
 
 async function init() {
     const { recipes } = await getRecipes();
-    const { ingredients, appliances, ustensils } = await createArrays();
+    const { ingredients, appliances, ustensils } = createArrays(recipes);
 
 
     createRecipeCard(recipes); //recipes 
-    createArrays(); //tableaux de base
+    createArrays(recipes); //tableaux de base
     attributeItems(ingredients, ustensils, appliances); //attribution basique
 
     

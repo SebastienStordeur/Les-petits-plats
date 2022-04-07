@@ -5,7 +5,7 @@ class Controller {
 
 		//initial recipes
 		/* this.default(this.model.recipe) */
-		
+		const recipes = this.model.getRecipes()
 	}
 
 	filterMainInput() {

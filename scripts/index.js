@@ -12,7 +12,7 @@ async function init() {
 
 
     createRecipeCard(recipes); //recipes 
-    createArrays(recipes); //tableaux de base
+    //createArrays(recipes); //tableaux de base
     attributeItems(ingredients, ustensils, appliances); //attribution basique
 
     
@@ -20,7 +20,7 @@ async function init() {
     advancedInputFiltering(ingredients, appliances, ustensils); //ou listes maj
     openList();
     //closelist
-    createTag()
+    createTag(recipes)
 
     //search()
 };

@@ -1,23 +1,20 @@
 //Filtering with main input
-async function mainInputFiltering(recipes) {
-	input.addEventListener("input", async () => {
+function mainInputFiltering(recipes) {
+	input.addEventListener("input", () => {
 		if(input.value.length < 3) {
 			recipeSection.innerHTML = "";
 			createRecipeCard(recipes);
 			return recipes;
 		} 	else {
 			//Filtering recipes
+			
 			const filteredRecipes = recipes.filter(recipe => {
+				recipe.ingredients.forEach(ing => console.log("ingredient",ing))
 				return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
-				recipe.description.toLowerCase().includes(input.value.toLowerCase()) /* || 
-				recipe.ingredients.toLowerCase().includes(input.value.toLowerCase()); */
+				recipe.description.toLowerCase().includes(input.value.toLowerCase())  //|| 
+				//recipe.ingredients.forEach(ing => ing.toLowerCase().includes(input.value.toLowerCase()))
 			});
-			console.log("resultats", filteredRecipes)
-
-
-
-			arrays(filteredRecipes)
-			//attribute function () attributeItems(tableaux filtrés)
+			createArrays(filteredRecipes)
 			recipeSection.innerHTML = "";
 			createRecipeCard(filteredRecipes);
 			return filteredRecipes;
@@ -25,13 +22,10 @@ async function mainInputFiltering(recipes) {
 	});
 }
 
-
-
 function arrays(filteredRecipes) {
 	var ingredients = [];
 	var ustensils = [];
 	var appliances = [];
-	console.log(appliances)
 	for(let i = 0; i<filteredRecipes.length; i++) {
 		if(!appliances.includes(filteredRecipes[i].appliance)) appliances.push(filteredRecipes[i].appliance)
 	
@@ -43,12 +37,7 @@ function arrays(filteredRecipes) {
 			if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
 		})
 	}
-	console.log("new array aplpiance", appliances)
-	console.log("new ingredients array", ingredients)
-	console.log("new ustensisl array", ustensils)
-
 	attributeItems(ingredients, appliances, ustensils)
-
 	return (ingredients, ustensils, appliances)
  }
 
@@ -69,15 +58,19 @@ function createArrays(recipes) {
 			if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
 		})
 	}
+
+	attributeItems(ingredients, appliances, ustensils)
   	return ({ ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] })
 }
 
 //fill lists with ingredients ustensils and appliances
 function attributeItems(ingredients, ustensils, appliances) {
+	//replace each list by a queryselectorAll
 	ingList.innerHTML = ""
 	appList.innerHTML = ""
 	ustList.innerHTML = ""
 	//Attributing ingredients to the div (for tag and advance search)
+	//une fonction suffira
  	ingredients.forEach(ingredient => {
 		const ingredientSpan = document.createElement("span");
 		ingList.appendChild(ingredientSpan);
@@ -116,10 +109,7 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
 				ingList.appendChild(ingredientSpan)
 				ingredientSpan.textContent = filteredIngredients[j]
 			} //split function
-/* 			filteredIngredients.forEach(ingredient => {
-				ingList.appendChild(ingredientSpan)
-				ingredientSpan.textContent = ingredient
-			}) */ //not working
+			
             console.log("filtered appliance",filteredAppliances)
             console.log("filtered ingrediens", filteredIngredients)
             console.log("filtered ustensils", filteredUstensils)
@@ -131,13 +121,18 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
 
 
 //only ingredients 
-function createTag() {
+function createTag(recipes) {
 	for(let i=0; i<ingredientSpans.length; i++) {
 		ingredientSpans[i].addEventListener("click", () => {
 			const tag = document.createElement("span")
 			tag.classList.add("tag");
 			tagSection.appendChild(tag)
 			tag.textContent = ingredientSpans[i].innerHTML
+			const filteredRecipes = recipes.filter(recipe => {
+				return recipe.name.includes(tag.innerHTML) ||
+				recipe.description.includes(tag.innerHTML)
+			})
+			console.log(filteredRecipes)
 		})
 	}
 }
@@ -145,7 +140,6 @@ function createTag() {
 //not active yet
 function search() {
 	const input = document.querySelector(".search-bar");
-	//liste de fonctions
 	//main input
 	async function filterMainInput(recipes) {
 		input.addEventListener("input", () => {
@@ -160,8 +154,6 @@ function search() {
 					recipe.description.toLowerCase().includes(input.value.toLowerCase()) /* || 
 					recipe.ingredients.toLowerCase().includes(input.value.toLowerCase()); */
 				});
-				console.log("resultats", filteredRecipes)
-	
 				recipeSection.innerHTML = "";
 				createRecipeCard(filteredRecipes);
 				return filteredRecipes;

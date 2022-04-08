@@ -132,6 +132,8 @@ function createTag(recipes) {
 				return recipe.name.includes(tag.innerHTML) ||
 				recipe.description.includes(tag.innerHTML)
 			})
+			recipeSection.innerHTML = "";
+			createRecipeCard(filteredRecipes)
 			console.log(filteredRecipes)
 		})
 	}

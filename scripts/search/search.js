@@ -46,7 +46,8 @@ function attributeItems(ingredients, appliances, ustensils) {
 	lists.innerHTML = ""
 
 	//Attributing ingredients to the div (for tag and advance search)
-	//une fonction suffira
+
+
  	ingredients.forEach(ingredient => {
 		const span = document.createElement("span");
 		lists[0].appendChild(span);
@@ -107,3 +108,31 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
 		})
 	}
 } */
+
+function createTag(recipes) {
+	//boucle pour detecter la liste
+	for(let i = 0; i < lists.length; i++) {
+		lists[i].addEventListener("click", () => {
+			const spans = lists[i].getElementsByTagName("span")
+			for(let j = 0; j<spans.length; j++) {
+				spans[j].addEventListener("click", () => {
+					console.log(spans[j].innerHTML)
+					const tag = document.createElement("span")
+					tag.classList.add("tag");
+					tagSection.appendChild(tag)
+					tag.textContent = spans[j].innerHTML
+
+					const filteredRecipes = recipes.filter(recipe => {
+						console.log(recipe)
+						return recipe.ingredients.ingredient.includes(tag.innerHTML) ||
+						recipe.appliance.includes(tag.innerHTML)
+					})
+					recipeSection.innerHTML = "";
+					createRecipeCard(filteredRecipes)
+					console.log(filteredRecipes)
+				})
+			}
+		})
+	}
+}
+

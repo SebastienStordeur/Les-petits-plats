@@ -7,7 +7,6 @@ function mainInputFiltering(recipes) {
 			return recipes;
 		} 	else {
 			//Filtering recipes
-			
 			const filteredRecipes = recipes.filter(recipe => {
 				recipe.ingredients.forEach(ing => console.log("ingredient",ing))
 				return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
@@ -22,28 +21,8 @@ function mainInputFiltering(recipes) {
 	});
 }
 
-function arrays(filteredRecipes) {
-	var ingredients = [];
-	var ustensils = [];
-	var appliances = [];
-	for(let i = 0; i<filteredRecipes.length; i++) {
-		if(!appliances.includes(filteredRecipes[i].appliance)) appliances.push(filteredRecipes[i].appliance)
-	
-		filteredRecipes[i].ustensils.forEach((ustensil) => {
-			if(!ustensils.includes(ustensil)) ustensils.push(ustensil)
-		})
-
-		filteredRecipes[i].ingredients.forEach((ingredient) => {
-			if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
-		})
-	}
-	attributeItems(ingredients, appliances, ustensils)
-	return (ingredients, ustensils, appliances)
- }
-
 //Create ingredients, ustensils and appliances arrays
 function createArrays(recipes) {
-
 	var ingredients = [];
 	var appliances = [];
 	var ustensils = [];
@@ -53,43 +32,39 @@ function createArrays(recipes) {
 		recipes[i].ustensils.forEach((ustensil) => {
 			if(!ustensils.includes(ustensil)) ustensils.push(ustensil)
 		})
-
+		
 		recipes[i].ingredients.forEach((ingredient) => {
 			if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
 		})
 	}
-
 	attributeItems(ingredients, appliances, ustensils)
   	return ({ ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] })
 }
 
 //fill lists with ingredients ustensils and appliances
-function attributeItems(ingredients, ustensils, appliances) {
-	//replace each list by a queryselectorAll
-	ingList.innerHTML = ""
-	appList.innerHTML = ""
-	ustList.innerHTML = ""
+function attributeItems(ingredients, appliances, ustensils) {
+	lists.innerHTML = ""
+
 	//Attributing ingredients to the div (for tag and advance search)
 	//une fonction suffira
  	ingredients.forEach(ingredient => {
-		const ingredientSpan = document.createElement("span");
-		ingList.appendChild(ingredientSpan);
-		ingredientSpan.textContent = ingredient;
+		const span = document.createElement("span");
+		lists[0].appendChild(span);
+		span.textContent = ingredient;
+	})
+	//Attributing appliances to the div (for tag and advance search)
+	appliances.forEach(appliance => {
+		const span = document.createElement("span");
+		lists[1].appendChild(span);
+		span.textContent = appliance;
 	})
 	//Attributing ustensils to the div (for tag and advance search)
 	ustensils.forEach(ustensil => {
 		const ustensilSpan = document.createElement("span");
-		ustList.appendChild(ustensilSpan);
+		lists[2].appendChild(ustensilSpan);
 		ustensilSpan.textContent = ustensil;
 	})
-	//Attributing appliances to the div (for tag and advance search)
-	appliances.forEach(appliance => {
-		const applianceSpan = document.createElement("span");
-		appList.appendChild(applianceSpan);
-		applianceSpan.textContent = appliance;
-	})
 }
-
 
 function advancedInputFiltering(ingredients, appliances, ustensils) {
 	for(let i = 0; i < advancedInput.length; i++) {
@@ -103,25 +78,19 @@ function advancedInputFiltering(ingredients, appliances, ustensils) {
  			const filteredUstensils = ustensils.filter(ustensil => {
                 return ustensil.toLowerCase().includes(advancedInput[2].value.toLowerCase())
             })
-			ingList.innerHTML = ""
+			lists[0].innerHTML = ""
 			for(let j=0; j<filteredIngredients.length; j++) {
 				const ingredientSpan = document.createElement("span");
-				ingList.appendChild(ingredientSpan)
+				lists[0].appendChild(ingredientSpan)
 				ingredientSpan.textContent = filteredIngredients[j]
 			} //split function
-			
-            console.log("filtered appliance",filteredAppliances)
-            console.log("filtered ingrediens", filteredIngredients)
-            console.log("filtered ustensils", filteredUstensils)
 			return filteredIngredients || filteredAppliances || filteredUstensils
 		})
 	}
 }
 
-
-
 //only ingredients 
-function createTag(recipes) {
+/* function createTag(recipes) {
 	for(let i=0; i<ingredientSpans.length; i++) {
 		ingredientSpans[i].addEventListener("click", () => {
 			const tag = document.createElement("span")
@@ -137,32 +106,4 @@ function createTag(recipes) {
 			console.log(filteredRecipes)
 		})
 	}
-}
-
-//not active yet
-function search() {
-	const input = document.querySelector(".search-bar");
-	//main input
-	async function filterMainInput(recipes) {
-		input.addEventListener("input", () => {
-			if(input.value.length < 3) {
-				recipeSection.innerHTML = "";
-				createRecipeCard(recipes);
-				return recipes;
-			} 	else {
-				//Filtering recipes
-				const filteredRecipes = recipes.filter(recipe => {
-					return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
-					recipe.description.toLowerCase().includes(input.value.toLowerCase()) /* || 
-					recipe.ingredients.toLowerCase().includes(input.value.toLowerCase()); */
-				});
-				recipeSection.innerHTML = "";
-				createRecipeCard(filteredRecipes);
-				return filteredRecipes;
-			}
-		});
-	}
-	//tag
-	//filtrer les ingredients et autres avec leur input
-	//updates
-}
+} */

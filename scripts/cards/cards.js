@@ -56,6 +56,6 @@ class Recipe {
 //Create a card for each recipe
 function createRecipeCard(recipes) {
     recipes.forEach((recipe) => {
-        recipeSection.appendChild(new Recipe(recipe).createCard()); 
+        recipeSection.appendChild(new Recipe(recipe).createCard());
     });
 };

@@ -107,9 +107,8 @@ function advancedInputFiltering(ingredients, appliances, ustensils) { //working
 } */
 
 function advancedInputFiltering(ingredients, appliances, ustensils) {
-	advancedInput.forEach((input, index) => {
+	advancedInput.forEach((input) => {
 		input.addEventListener("input", () => {
-			console.log(`input ${index}`, input.value)
 			filterArrays(ingredients, 0)
 			filterArrays(appliances, 1)
 			filterArrays(ustensils, 2)
@@ -205,17 +204,27 @@ function filterArrays(elements, index) {
 
 function createTag() {
 	lists.forEach((list, index) => {
-		console.log(list)
 		const spans = list.getElementsByTagName("span")
-		
 		for(let i=0; i<spans.length; i++) {
 			spans[i].addEventListener("click", () => {
-				console.log(spans[i].innerHTML)
 				const tag = document.createElement("span")
-				tag.classList.add("tag");
+				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag)
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>"
+				deleteTag()
 			})
 		}
 	})
+}
+
+function deleteTag() {
+	if(tagSection == "") return
+	else {
+		const crossTags = document.querySelectorAll(".delete-tag");
+		crossTags.forEach((tag) => {
+			tag.addEventListener("click", () => {
+				tag.parentElement.remove()
+			})
+		}) 
+	}
 }

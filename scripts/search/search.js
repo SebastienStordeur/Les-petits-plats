@@ -1,18 +1,20 @@
 //Filtering with main input
 function mainInputFiltering(recipes) {
 	input.addEventListener("input", () => {
+		let filteredRecipes
 		if(input.value.length < 3) {
+			filteredRecipes = recipes
 			createRecipeCard(recipes);
+			createArrays(recipes)
 			return recipes;
 		} 	else {
 			//Filtering recipes
-			const filteredRecipes = recipes.filter(recipe => {
+			filteredRecipes = recipes.filter(recipe => {
 				recipe.ingredients.forEach(ing => console.log("ingredient",ing))
 				return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
 				recipe.description.toLowerCase().includes(input.value.toLowerCase())  //|| 
 				//recipe.ingredients.forEach(ing => ing.toLowerCase().includes(input.value.toLowerCase()))
 			});
-			console.log(filteredRecipes)
 			createArrays(filteredRecipes)
 			createRecipeCard(filteredRecipes);
 			return filteredRecipes;

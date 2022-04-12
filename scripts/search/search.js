@@ -2,7 +2,6 @@
 function mainInputFiltering(recipes) {
 	input.addEventListener("input", () => {
 		if(input.value.length < 3) {
-			recipeSection.innerHTML = "";
 			createRecipeCard(recipes);
 			return recipes;
 		} 	else {
@@ -15,7 +14,6 @@ function mainInputFiltering(recipes) {
 			});
 			console.log(filteredRecipes)
 			createArrays(filteredRecipes)
-			recipeSection.innerHTML = "";
 			createRecipeCard(filteredRecipes);
 			return filteredRecipes;
 		}
@@ -37,22 +35,19 @@ function createArrays(recipes) {
 		recipes[i].ingredients.forEach((ingredient) => {
 			if(!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient)
 		})
-		
 	}
-	console.log("ingredients", ingredients)
 	attributeItems(ingredients, appliances, ustensils)
+	//advancedInputFiltering(ingredients, appliances, ustensils)
+	createTag(recipes)
   	return ({ ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] })
 }
 
 //fill lists with ingredients ustensils and appliances
+// problème = si on supprime tout le champ input, on ne récupère pas tout les ingredients ect
  function attributeItems(ingredients, appliances, ustensils) {
-	lists.forEach(list => {
-		list.innerHTML = ""
-	})
+	lists.forEach(list => { list.innerHTML = "" })
 
 	//Attributing ingredients to the div (for tag and advance search)
-
-
  	ingredients.forEach(ingredient => {
 		const span = document.createElement("span");
 		lists[0].appendChild(span);
@@ -71,6 +66,7 @@ function createArrays(recipes) {
 		ustensilSpan.textContent = ustensil;
 	})
 }
+
 //filter ingredients/appliances/ustensils
 function advancedInputFiltering(ingredients, appliances, ustensils) {
 	advancedInput.forEach((input) => {
@@ -87,7 +83,6 @@ function filterArrays(elements, index) {
 	const filteredElement = elements.filter(element => {
 		return element.toLowerCase().includes(advancedInput[index].value.toLowerCase())
 	})
-	console.log("filter element",filteredElement)
 	lists[index].innerHTML = ""
  	filteredElement.forEach((element) => {
 		const span = document.createElement("span");

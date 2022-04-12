@@ -9,18 +9,12 @@ async function getRecipes() {
 async function init() {
     const { recipes } = await getRecipes();
     const { ingredients, appliances, ustensils } = createArrays(recipes);
-
-
-    createRecipeCard(recipes); //recipes 
-
     
+    createRecipeCard(recipes); //recipes 
     mainInputFiltering(recipes); //recipes ou liste de recette maj
     advancedInputFiltering(ingredients, appliances, ustensils); //ou listes maj
     openList();
     //closelist
-    createTag(recipes) 
-
-    //search()
 };
 
 init();

@@ -12,7 +12,7 @@ async function init() {
     
     createRecipeCard(recipes); //recipes 
     mainInputFiltering(recipes); //recipes ou liste de recette maj
-    advancedInputFiltering(ingredients, appliances, ustensils); //ou listes maj
+    advancedInputFiltering(ingredients, appliances, ustensils, recipes); //ou listes maj
     openList();
     //closelist
 };

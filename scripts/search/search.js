@@ -6,19 +6,22 @@ function mainInputFiltering(recipes) {
 			filteredRecipes = recipes
 			createRecipeCard(recipes);
 			createArrays(recipes)
-			return recipes;
+			return filteredRecipes;
 		} 	else {
 			//Filtering recipes
 			filteredRecipes = recipes.filter(recipe => {
-				recipe.ingredients.forEach(ing => console.log("ingredient",ing))
+				//recipe.ingredients.forEach(ing => console.log("ingredient",ing))
 				return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
 				recipe.description.toLowerCase().includes(input.value.toLowerCase())  //|| 
 				//recipe.ingredients.forEach(ing => ing.toLowerCase().includes(input.value.toLowerCase()))
 			});
 			createArrays(filteredRecipes)
 			createRecipeCard(filteredRecipes);
+			createTag(filteredRecipes)
 			return filteredRecipes;
 		}
+
+	
 	});
 }
 
@@ -47,7 +50,7 @@ function createArrays(recipes) {
 //fill lists with ingredients ustensils and appliances
 // problème = si on supprime tout le champ input, on ne récupère pas tout les ingredients ect
  function attributeItems(ingredients, appliances, ustensils) {
-	lists.forEach(list => { list.innerHTML = "" })
+	lists.forEach(list => list.innerHTML = "")
 
 	//Attributing ingredients to the div (for tag and advance search)
  	ingredients.forEach(ingredient => {
@@ -70,13 +73,15 @@ function createArrays(recipes) {
 }
 
 //filter ingredients/appliances/ustensils
-function advancedInputFiltering(ingredients, appliances, ustensils) {
+function advancedInputFiltering(ingredients, appliances, ustensils, recipes) {
 	advancedInput.forEach((input) => {
 		input.addEventListener("input", () => {
 			filterArrays(ingredients, 0)
 			filterArrays(appliances, 1)
 			filterArrays(ustensils, 2)
+			createTag(recipes)
 		})
+		
 	})
 }
 
@@ -100,20 +105,40 @@ function createTag(recipes) {
 		for(let i=0; i<spans.length; i++) {
 			spans[i].addEventListener("click", () => {
 				const tag = document.createElement("span")
+				let filteredRecipes
 				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag)
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>"
 				
 				// filtre les recettes par rapport au choix par ingrédients si ingrédients ect
 				// puis réafficher les possibilités filtrer
-				const filteredRecipes = recipes.filter(recipe => {
-					return recipe.appliance.includes(spans[i].innerHTML)
-				})
+/* 				filteredRecipes = recipes.filter(recipe => {
+					console.log(recipe)
 
-				recipeSection.innerHTML = ""
-				list.innerHTML = ""
+					recipe.ingredients.forEach(ingredient => {
+						console.log(ingredient)
+						return ingredient.ingredient.includes(spans[i].innerHTML)
+					})
+					//recipes.ingredients.ingredient.ingredient.includes(spans[i].innerHTML)
+
+				}) */
+				//ustensils filter
+ 				
+					filteredRecipes = recipes.filter(recipe => {
+						console.log(recipe)
+						return recipe.ustensils.includes(spans[i].innerHTML)
+					})
+				
+
+
+				//Appliance filter
+/* 					filteredRecipes = recipes.filter(recipe => {
+						return recipe.appliance.includes(spans[i].innerHTML)
+					}) */
+				
+				mainInputFiltering(filteredRecipes)
 				createRecipeCard(filteredRecipes)
-				//createArrays()
+				createArrays(filteredRecipes)
 				console.log(filteredRecipes)
 				deleteTag()
 			})

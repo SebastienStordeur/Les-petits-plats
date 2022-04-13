@@ -20,8 +20,6 @@ function mainInputFiltering(recipes) {
 			createTag(filteredRecipes)
 			return filteredRecipes;
 		}
-
-	
 	});
 }
 
@@ -81,7 +79,6 @@ function advancedInputFiltering(ingredients, appliances, ustensils, recipes) {
 			filterArrays(ustensils, 2)
 			createTag(recipes)
 		})
-		
 	})
 }
 
@@ -124,13 +121,11 @@ function createTag(recipes) {
 				}) */
 				//ustensils filter
  				
-					filteredRecipes = recipes.filter(recipe => {
-						console.log(recipe)
-						return recipe.ustensils.includes(spans[i].innerHTML)
-					})
+				filteredRecipes = recipes.filter(recipe => {
+					console.log(recipe)
+					return recipe.ustensils.includes(spans[i].innerHTML)
+				})
 				
-
-
 				//Appliance filter
 /* 					filteredRecipes = recipes.filter(recipe => {
 						return recipe.appliance.includes(spans[i].innerHTML)
@@ -146,13 +141,16 @@ function createTag(recipes) {
 	})
 }
 
-function deleteTag() {
+function deleteTag(recipes) {
 	if(tagSection == "") return
 	else {
 		const crossTags = document.querySelectorAll(".delete-tag");
 		crossTags.forEach((tag) => {
 			tag.addEventListener("click", () => {
 				tag.parentElement.remove()
+/* 				recipes.filter(recipe => {
+
+				}) */
 			})
 		}) 
 	}

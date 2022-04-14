@@ -4,8 +4,6 @@ async function getRecipes() {
     return ({ recipes: [...recipes] });
 };
 
-
-
 async function init() {
     const { recipes } = await getRecipes();
     const { ingredients, appliances, ustensils } = createArrays(recipes);

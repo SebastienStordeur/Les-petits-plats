@@ -47,7 +47,18 @@ function createArrays(recipes) {
 
 //fill lists with ingredients ustensils and appliances
 // problème = si on supprime tout le champ input, on ne récupère pas tout les ingredients ect
- function attributeItems(ingredients, appliances, ustensils) {
+/*
+function attributeItems(elements, index) {
+	lists[index].innerHTML = "";
+	elements.forEach(element => {
+		const span = document.createElement("span");
+		lists[index].appendChild(span);
+		span.textContent = element;
+	})
+}
+
+*/
+function attributeItems(ingredients, appliances, ustensils) {
 	lists.forEach(list => list.innerHTML = "")
 
 	//Attributing ingredients to the div (for tag and advance search)
@@ -103,6 +114,7 @@ function createTag(recipes) {
 			spans[i].addEventListener("click", () => {
 				const tag = document.createElement("span")
 				let filteredRecipes
+				
 				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag)
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>"
@@ -148,6 +160,7 @@ function deleteTag(recipes) {
 		crossTags.forEach((tag) => {
 			tag.addEventListener("click", () => {
 				tag.parentElement.remove()
+				//refiltre a partir des recettes de base + applique les filtres
 /* 				recipes.filter(recipe => {
 
 				}) */

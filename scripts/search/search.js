@@ -10,11 +10,12 @@ function mainInputFiltering(recipes) {
 		} 	else {
 			//Filtering recipes
 			filteredRecipes = recipes.filter(recipe => {
-				//recipe.ingredients.forEach(ing => console.log("ingredient",ing))
-				return recipe.name.toLowerCase().includes(input.value.toLowerCase()) || 
-				recipe.description.toLowerCase().includes(input.value.toLowerCase())  //|| 
-				//recipe.ingredients.forEach(ing => ing.toLowerCase().includes(input.value.toLowerCase()))
-			});
+				return recipe.ingredients.filter(({ingredient}) => ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0
+				||
+				recipe.name.toLowerCase().includes(input.value.toLowerCase())
+				||
+				recipe.description.toLowerCase().includes(input.value.toLowerCase())
+			})
 			createArrays(filteredRecipes)
 			createRecipeCard(filteredRecipes);
 			createTag(filteredRecipes)
@@ -40,7 +41,6 @@ function createArrays(recipes) {
 		})
 	}
 	attributeItems(ingredients, appliances, ustensils)
-	//advancedInputFiltering(ingredients, appliances, ustensils)
 	createTag(recipes)
   	return ({ ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] })
 }
@@ -107,7 +107,8 @@ function filterArrays(elements, index) {
 }
 
 //create tag and filter recipes
-function createTag(recipes) {
+async function createTag(recipes) {
+	
 	lists.forEach((list, index) => {
 		const spans = list.getElementsByTagName("span")
 		for(let i=0; i<spans.length; i++) {
@@ -121,27 +122,24 @@ function createTag(recipes) {
 				
 				// filtre les recettes par rapport au choix par ingrédients si ingrédients ect
 				// puis réafficher les possibilités filtrer
-/* 				filteredRecipes = recipes.filter(recipe => {
-					console.log(recipe)
 
-					recipe.ingredients.forEach(ingredient => {
-						console.log(ingredient)
-						return ingredient.ingredient.includes(spans[i].innerHTML)
-					})
-					//recipes.ingredients.ingredient.ingredient.includes(spans[i].innerHTML)
+				console.log(recipes)
 
-				}) */
+				filteredRecipes = recipes.filter(recipe => {
+					recipe.ingredients.filter(({ingredient}) => ingredient.includes(spans[i].innerHTML)).length > 0
+				})
+
 				//ustensils filter
  				
-				filteredRecipes = recipes.filter(recipe => {
+/*  				filteredRecipes = recipes.filter(recipe => {
 					console.log(recipe)
 					return recipe.ustensils.includes(spans[i].innerHTML)
-				})
+				})  */
 				
 				//Appliance filter
 /* 					filteredRecipes = recipes.filter(recipe => {
 						return recipe.appliance.includes(spans[i].innerHTML)
-					}) */
+					})  */
 				
 				mainInputFiltering(filteredRecipes)
 				createRecipeCard(filteredRecipes)
@@ -153,7 +151,8 @@ function createTag(recipes) {
 	})
 }
 
-function deleteTag(recipes) {
+async function deleteTag() {
+	const recipesList = await getRecipes()
 	if(tagSection == "") return
 	else {
 		const crossTags = document.querySelectorAll(".delete-tag");
@@ -161,9 +160,6 @@ function deleteTag(recipes) {
 			tag.addEventListener("click", () => {
 				tag.parentElement.remove()
 				//refiltre a partir des recettes de base + applique les filtres
-/* 				recipes.filter(recipe => {
-
-				}) */
 			})
 		}) 
 	}

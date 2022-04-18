@@ -122,19 +122,16 @@ async function createTag(recipes) {
 				
 				// filtre les recettes par rapport au choix par ingrédients si ingrédients ect
 				// puis réafficher les possibilités filtrer
-
-				console.log(recipes)
-
-				filteredRecipes = recipes.filter(recipe => {
+/* 				filteredRecipes = recipes.filter(recipe => {
 					recipe.ingredients.filter(({ingredient}) => ingredient.includes(spans[i].innerHTML)).length > 0
-				})
+				}) */
 
 				//ustensils filter
  				
-/*  				filteredRecipes = recipes.filter(recipe => {
+ 				filteredRecipes = recipes.filter(recipe => {
 					console.log(recipe)
 					return recipe.ustensils.includes(spans[i].innerHTML)
-				})  */
+				})
 				
 				//Appliance filter
 /* 					filteredRecipes = recipes.filter(recipe => {
@@ -159,6 +156,8 @@ async function deleteTag() {
 		crossTags.forEach((tag) => {
 			tag.addEventListener("click", () => {
 				tag.parentElement.remove()
+				var filteredRecipes = recipesList
+				createRecipeCard(filteredRecipes)
 				//refiltre a partir des recettes de base + applique les filtres
 			})
 		}) 

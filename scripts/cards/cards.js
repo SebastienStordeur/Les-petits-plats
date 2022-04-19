@@ -59,4 +59,5 @@ function createRecipeCard(recipes) {
     recipes.forEach((recipe) => {
         recipeSection.appendChild(new Recipe(recipe).createCard());
     });
+    createArrays(recipes)
 };

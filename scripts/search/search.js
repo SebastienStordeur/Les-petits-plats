@@ -39,6 +39,7 @@ function createArrays(recipes) {
 	attributeItems(appliances, 1);
 	attributeItems(ustensils, 2);
 	createTag(recipes);
+	advancedInputFiltering(ingredients, appliances, ustensils, recipes)
   	return ({ ingredients: [...ingredients], appliances: [...appliances], ustensils: [...ustensils] });
 };
 

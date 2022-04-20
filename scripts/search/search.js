@@ -15,9 +15,9 @@ function mainInputFiltering(recipes) {
 			});
 			createRecipeCard(filteredRecipes);
 			return filteredRecipes;
-		}
+		};
 	});
-}
+};
 
 //Create ingredients, ustensils and appliances arrays
 function createArrays(recipes) {
@@ -80,7 +80,6 @@ function filterArrays(elements, index) {
 
 //create tag and filter recipes
 function createTag(recipes) {
-	let tagList = []
 	lists.forEach((list, index) => {
 		const spans = list.getElementsByTagName("span")
 		for(let i=0; i<spans.length; i++) {
@@ -90,8 +89,6 @@ function createTag(recipes) {
 				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag);
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
-				tagList.push(spans[i].innerHTML)
-				console.log(tagList)
 
 /*  				filteredRecipes = recipes.filter(recipe => {
 					recipe.ingredients.filter(({ingredient}) => ingredient.includes(spans[i].innerHTML))
@@ -102,7 +99,6 @@ function createTag(recipes) {
 				
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
-				console.log(filteredRecipes);
 				deleteTag(recipes);
 			});
 		};
@@ -110,6 +106,38 @@ function createTag(recipes) {
 };
 
 function deleteTag(recipes) {
+	const crossTags = document.querySelectorAll(".delete-tag");
+	let filteredRecipes
+
+	if(tagSection == "") return;
+	else {
+		crossTags.forEach(tag => {
+			
+				tag.addEventListener("click", () => {
+					tag.parentElement.remove();
+
+					if(crossTags.length > 1) {
+						console.log("Liste supérieur à 2")
+
+						filteredRecipes = recipes.filter(recipe => {
+							return recipe.ustensils.includes(tag.parentElement.innerHTML.split("<")[0]) || 
+							recipe.appliance.includes(tag.parentElement.innerHTML.split("<")[0])
+						})
+
+						console.log("length > 1", filteredRecipes)
+						createRecipeCard(filteredRecipes);
+					}	else {
+						console.log("length = 1")
+						filteredRecipes = recipes
+						createRecipeCard(filteredRecipes);
+					}
+				})	
+				
+		})
+	}
+}
+
+/* function deleteTag(recipes) {
 	const crossTags = document.querySelectorAll(".delete-tag");
 	if(tagSection == "") return;
 	else {
@@ -119,22 +147,27 @@ function deleteTag(recipes) {
 				let filteredRecipes
 				//filter recipes a partir de la liste de départ
 				for(let j =0; j<crossTags.length; j++) {
-					console.log(crossTags.length)
+					console.log("legnth", crossTags.length)
+					
 					if(crossTags.length > 1) {
 						console.log(crossTags)
+						console.log("list supérieur à 2")
+						
 						filteredRecipes = recipes.filter(recipe => {
-							return recipe.ustensils.includes(crossTags[j].parentElement.innerHTML.split("<")[0]) || recipe.appliance.includes(crossTags[j].parentElement.innerHTML.split("<")[0])
+							return recipe.ustensils.includes(crossTags[j].parentElement.innerHTML.split("<")[0]) || 
+							recipe.appliance.includes(crossTags[j].parentElement.innerHTML.split("<")[0])
 						})
-						console.log("if l>1", filteredRecipes)
+
+						console.log("if tag>1", filteredRecipes)
 						createRecipeCard(filteredRecipes);
-					}
-					else {
+
+					}	else {
 						filteredRecipes = recipes
 						createRecipeCard(filteredRecipes);
 					}
-					console.log(filteredRecipes)
+					console.log("recettes filtrées", filteredRecipes)
 				}
 			});
 		});
 	};
-};
+}; */

@@ -1,5 +1,3 @@
-let recipeList = fetch('../../data/recipes.json').then(response => response.json()).then(data => console.log(data))
-
 //Filtering with main input
 function mainInputFiltering(recipes) {
 	input.addEventListener("input", () => {
@@ -26,17 +24,17 @@ function createArrays(recipes) {
 	var ingredients = [];
 	var appliances = [];
 	var ustensils = [];
-	for (let i = 0; i < recipes.length; i++) {
-		if (!appliances.includes(recipes[i].appliance)) appliances.push(recipes[i].appliance);
+	recipes.forEach(recipe => {
+		if (!appliances.includes(recipe.appliance)) appliances.push(recipe.appliance);
 
-		recipes[i].ustensils.forEach((ustensil) => {
+		recipe.ustensils.forEach((ustensil) => {
 			if (!ustensils.includes(ustensil)) ustensils.push(ustensil);
 		});
 
-		recipes[i].ingredients.forEach((ingredient) => {
+		recipe.ingredients.forEach((ingredient) => {
 			if (!ingredients.includes(ingredient.ingredient)) ingredients.push(ingredient.ingredient);
 		});
-	};
+	})
 	attributeItems(ingredients, 0);
 	attributeItems(appliances, 1);
 	attributeItems(ustensils, 2);
@@ -118,13 +116,14 @@ function createTag(recipes) {
 				console.log(filteredRecipes)
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
-				deleteTag(recipeList); //tableau filtré
+				deleteTag(); //tableau filtré
 			});
 		};
 	});
 };
 
-function deleteTag(recipes) {
+async function deleteTag() {
+	const { recipes } = await getRecipes();
 	console.log(recipes)
 	const crossTags = document.querySelectorAll(".delete-tag");
 	let filteredRecipes

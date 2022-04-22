@@ -1,3 +1,5 @@
+let tagList = [];
+
 //Filtering with main input
 function mainInputFiltering(recipes) {
 	input.addEventListener("input", () => {
@@ -80,16 +82,23 @@ function filterArrays(elements, index) {
 
 //create tag and filter recipes
 function createTag(recipes) {
+	
 	lists.forEach((list, index) => {
 		const spans = list.getElementsByTagName("span")
 		for (let i = 0; i < spans.length; i++) {
 			spans[i].addEventListener("click", () => {
+				
 				const tag = document.createElement("span");
+				
 				let filteredRecipes;
 				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag);
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
-/* 
+				tagList.push(spans[i].innerHTML)
+
+				console.log(tagList)
+
+				/* 
  				filteredRecipes = recipes.filter(recipe => {
 					// recipe.ingredients.filter(({ ingredient }) => ingredient.includes(spans[i].innerHTML))
 					// recipe.ingredients.filter(({ ingredient }) => console.log(ingredient))
@@ -116,96 +125,94 @@ function createTag(recipes) {
 				console.log(filteredRecipes)
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
-				deleteTag(); //tableau filtré
+				deleteTag(tagList); //tableau filtré
 			});
 		};
 	});
 };
 
-async function deleteTag() {
+async function deleteTag(tagList) {
 	const { recipes } = await getRecipes();
-	console.log(recipes)
 	const crossTags = document.querySelectorAll(".delete-tag");
-	let filteredRecipes
+	let filteredRecipes ;
+
+	if(tagSection == "") return;
+	else {
+		crossTags.forEach((tag, index) => {
+			
+			tag.addEventListener("click", () => {
+				console.log(crossTags[index])
+				crossTags[index].parentElement.remove()
+				
+				if(crossTags.length == 1) {
+					filteredRecipes = recipes
+					tagList = []
+					createRecipeCard(filteredRecipes)
+				}
+				if(crossTags.length > 1) {
+					const test = crossTags.forEach(tags => {
+						return tags.parentElement.innerHTML.split("<")[0]
+					})
+					console.log(test)
+					const filteredTags = tagList.forEach(tag => {
+						crossTags.forEach(tags => {
+							return tags.parentElement.innerHTML.split("<")[0]
+						})
+					})
+					tagList.splice(1, crossTags[index].parentElement.innerHTML.split("<")[0])
+						console.log(tagList)
+					filteredRecipes = recipes.filter(recipe => {
+						const isUstensilInRecipes = tagList.forEach(tag => {
+							recipe.ustensils.includes(tag)
+						})
+						const isApplianceInRecipes = tagList.forEach(tag => {
+							recipe.appliance.includes(tag)
+						})
+
+						//const isApplianceInRecipes = recipe.appliance.includes(tag.parentElement.innerHTML.split("<")[0]);
+						return isUstensilInRecipes || isApplianceInRecipes
+					})
+					createRecipeCard(filteredRecipes)
+				}
+				console.log(filteredRecipes)
+			})
+		})
+	}
+}
+
+//Pour l'instant, le script détecte que l'on supprime à chaque fois LE PREMIER
+//Element de la liste de tag
+
+/* async function deleteTag() {
+	const { recipes } = await getRecipes();
+	const crossTags = document.querySelectorAll(".delete-tag");
+	let filteredRecipes;
 
 	if (tagSection == "") return;
 	else {
-		crossTags.forEach(tag => {
-
+		crossTags.forEach((tag, index) => {
 			tag.addEventListener("click", () => {
 				tag.parentElement.remove();
-
+			
 				if (crossTags.length > 1) {
 					console.log("Liste supérieur à 2")
 					console.log(recipes)
 					filteredRecipes = recipes.filter(recipe => {
 						return recipe.ustensils.includes(tag.parentElement.innerHTML.split("<")[0]) ||
-							recipe.appliance.includes(tag.parentElement.innerHTML.split("<")[0])
+						recipe.appliance.includes(tag.parentElement.innerHTML.split("<")[0])
 					})
 
 					console.log("length > 1", filteredRecipes)
+					console.log("nombre de recette " + recipes.length)
 					createRecipeCard(filteredRecipes);
 				} else {
 					console.log("length = 1")
+					console.log("nombre de recettes = " + recipes.length)
 					filteredRecipes = recipes
 					createRecipeCard(filteredRecipes);
 				}
 			})
-
 		})
 	}
-}
+} */
 
-/* function deleteTag(recipes) {
-	const crossTags = document.querySelectorAll(".delete-tag");
-	if(tagSection == "") return;
-	else {
-		crossTags.forEach((tag) => {
-			tag.addEventListener("click", () => {
-				tag.parentElement.remove();
-				let filteredRecipes
-				//filter recipes a partir de la liste de départ
-				for(let j =0; j<crossTags.length; j++) {
-					console.log("legnth", crossTags.length)
-					
-					if(crossTags.length > 1) {
-						console.log(crossTags)
-						console.log("list supérieur à 2")
-						
-						filteredRecipes = recipes.filter(recipe => {
-							return recipe.ustensils.includes(crossTags[j].parentElement.innerHTML.split("<")[0]) || 
-							recipe.appliance.includes(crossTags[j].parentElement.innerHTML.split("<")[0])
-						})
-
-						console.log("if tag>1", filteredRecipes)
-						createRecipeCard(filteredRecipes);
-
-					}	else {
-						filteredRecipes = recipes
-						createRecipeCard(filteredRecipes);
-					}
-					console.log("recettes filtrées", filteredRecipes)
-				}
-			});
-		});
-	};
-}; */
-
-
-// let tags = [];
-
-// tag.addEventListener('click' , (event) => {
-// 	const currentTag = event.target.getAttribute("data-tag");
-// 	tags.push(currentTag);
-
-// 	displayRecipe()
-
-// 	tags.filter
-// 	.remove
-
-// 	displayRecipe()
-
-
-// })
-
-// function displayRecipe()

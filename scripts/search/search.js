@@ -87,17 +87,23 @@ function createTag(recipes) {
 		const spans = list.getElementsByTagName("span")
 		for (let i = 0; i < spans.length; i++) {
 			spans[i].addEventListener("click", () => {
-				
 				const tag = document.createElement("span");
 				
-				let filteredRecipes;
+				let filteredRecipes =[];
 				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag);
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
 				tagList.push(spans[i].innerHTML)
 
-				console.log(tagList)
+				filteredRecipe = filteredRecipes.push(recipes.filter(recipe => {
+					recipe.ingredients.forEach(({ingredient}) => {
+						console.log(ingredient)
+						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
 
+					})
+				}))
+
+				console.log(filteredRecipes)
 				/* 
  				filteredRecipes = recipes.filter(recipe => {
 					// recipe.ingredients.filter(({ ingredient }) => ingredient.includes(spans[i].innerHTML))
@@ -119,10 +125,10 @@ function createTag(recipes) {
 					})
 				}) */
 				//console.log(filteredRecipes)
- 				filteredRecipes = recipes.filter(recipe => {
+ 				/* filteredRecipes = recipes.filter(recipe => {
 					return recipe.ustensils.includes(spans[i].innerHTML) || recipe.appliance.includes(spans[i].innerHTML)
-				})
-				console.log(filteredRecipes)
+				}) */
+				console.log("recette filtrées", filteredRecipes)
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
 				deleteTag(tagList); //tableau filtré
@@ -139,33 +145,35 @@ async function deleteTag(tagList) {
 	if(tagSection == "") return;
 	else {
 		crossTags.forEach((tag, index) => {
-			
 			tag.addEventListener("click", () => {
-				console.log(crossTags[index])
-				crossTags[index].parentElement.remove()
+				//crossTags[index].parentElement.parentElement.removeChild(crossTags[index])
+				tagSection.removeChild(crossTags[index].parentElement)
+				tagList = []
 				
+				const tagSectionContent = tagSection.innerHTML
 				if(crossTags.length == 1) {
 					filteredRecipes = recipes
-					tagList = []
 					createRecipeCard(filteredRecipes)
 				}
+//Elements supprimé ne sont pas supprimé de la node list
 				if(crossTags.length > 1) {
-					const test = crossTags.forEach(tags => {
-						return tags.parentElement.innerHTML.split("<")[0]
+					var filteredTags = [];					
+					tagList = []
+					tagList.push(tag.parentElement.innerHTML.split("<")[0])
+					crossTags.forEach(tag => {
+						filteredTags.push(tag.parentElement.innerHTML.split("<")[0])
+						//tagList.push(tag.parentElement.innerHTML.split("<")[0])
 					})
-					console.log(test)
-					const filteredTags = tagList.forEach(tag => {
-						crossTags.forEach(tags => {
-							return tags.parentElement.innerHTML.split("<")[0]
-						})
-					})
-					tagList.splice(1, crossTags[index].parentElement.innerHTML.split("<")[0])
-						console.log(tagList)
+					console.log("crosstags,",crossTags)
+					console.log("tag filtrée tableau", filteredTags)
+					console.log(tagSectionContent)
+					
+					console.log("taglist",tagList)
 					filteredRecipes = recipes.filter(recipe => {
-						const isUstensilInRecipes = tagList.forEach(tag => {
+						const isUstensilInRecipes = filteredTags.forEach(tag => {
 							recipe.ustensils.includes(tag)
 						})
-						const isApplianceInRecipes = tagList.forEach(tag => {
+						const isApplianceInRecipes = filteredTags.forEach(tag => {
 							recipe.appliance.includes(tag)
 						})
 
@@ -176,8 +184,10 @@ async function deleteTag(tagList) {
 				}
 				console.log(filteredRecipes)
 			})
+			//console.log(tagSection.innerHTML)
 		})
 	}
+	
 }
 
 //Pour l'instant, le script détecte que l'on supprime à chaque fois LE PREMIER

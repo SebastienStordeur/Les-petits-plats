@@ -95,39 +95,26 @@ function createTag(recipes) {
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
 				tagList.push(spans[i].innerHTML)
 
-				filteredRecipe = filteredRecipes.push(recipes.filter(recipe => {
-					recipe.ingredients.forEach(({ingredient}) => {
+				console.log(tagList)
+
+
+				//working mais erreur dans la création des cartes donc filtrage des tableaux impossible
+/* 				var array = filteredRecipes.push(recipes.filter(recipe => {
+					recipe.ingredients.filter(({ingredient}) => {
 						console.log(ingredient)
 						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
-
 					})
+					console.log(filteredRecipes)
 				}))
 
-				console.log(filteredRecipes)
-				/* 
- 				filteredRecipes = recipes.filter(recipe => {
-					// recipe.ingredients.filter(({ ingredient }) => ingredient.includes(spans[i].innerHTML))
-					// recipe.ingredients.filter(({ ingredient }) => console.log(ingredient))
-					 return recipe.ingredients.filter(( value ) => {
-						 
-						//  if (value.ingredients === spans[i].innerHTML) {
-						// 	 return recipe;
-						//  }
-						// console.log("Ingredient du filer : " + ingredient)
-						// console.log("INNER HTMl  " + spans[i].innerHTML)
-						// if ()
-						// return ingredient.includes(spans[i].innerHTML)
-						//  if (ingredient.includes(spans[i].innerHTML)) {
-						//  	console.log('CONTIENt')
-						// 	 return recipe
-						//  } 
-						// return ingredient.includes(spans[i].innerHTML)
-					})
-				}) */
+				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
+				console.log("array",array)
+				console.log(filteredRecipes) */
+
 				//console.log(filteredRecipes)
- 				/* filteredRecipes = recipes.filter(recipe => {
+ 				filteredRecipes = recipes.filter(recipe => {
 					return recipe.ustensils.includes(spans[i].innerHTML) || recipe.appliance.includes(spans[i].innerHTML)
-				}) */
+				})
 				console.log("recette filtrées", filteredRecipes)
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
@@ -137,7 +124,7 @@ function createTag(recipes) {
 	});
 };
 
-async function deleteTag(tagList) {
+/* async function deleteTag(tagList) {
 	const { recipes } = await getRecipes();
 	const crossTags = document.querySelectorAll(".delete-tag");
 	let filteredRecipes ;
@@ -155,12 +142,14 @@ async function deleteTag(tagList) {
 					filteredRecipes = recipes
 					createRecipeCard(filteredRecipes)
 				}
-//Elements supprimé ne sont pas supprimé de la node list
+				//Elements supprimé ne sont pas supprimé de la node list
 				if(crossTags.length > 1) {
 					var filteredTags = [];					
 					tagList = []
+					console.log(tag.parentElement.innerHTML.split("<")[0])
 					tagList.push(tag.parentElement.innerHTML.split("<")[0])
 					crossTags.forEach(tag => {
+						console.log("tag", tag)
 						filteredTags.push(tag.parentElement.innerHTML.split("<")[0])
 						//tagList.push(tag.parentElement.innerHTML.split("<")[0])
 					})
@@ -187,8 +176,7 @@ async function deleteTag(tagList) {
 			//console.log(tagSection.innerHTML)
 		})
 	}
-	
-}
+} */
 
 //Pour l'instant, le script détecte que l'on supprime à chaque fois LE PREMIER
 //Element de la liste de tag

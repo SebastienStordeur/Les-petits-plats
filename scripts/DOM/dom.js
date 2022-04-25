@@ -6,4 +6,4 @@ const advancedInput = document.querySelectorAll(".input");
 
 const filterBtn = document.querySelectorAll(".btn");
 const lists = document.querySelectorAll(".list");
-const span = document.createElement("span")
+/* const span = document.createElement("span"); */

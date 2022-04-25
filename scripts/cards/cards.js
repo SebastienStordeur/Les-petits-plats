@@ -38,13 +38,13 @@ class Recipe {
         recipe.appendChild(ingredientsDiv);
         recipe.appendChild(instructions);
 
-        this.ingredients.forEach((ingredient) => {
+        for(let ingredient of this.ingredients) {
             const singleIngredient = document.createElement("p");
             ingredientsDiv.appendChild(singleIngredient);
-            if(!ingredient.quantity && !ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}</span>`
-            else if(!ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity
-            else singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity + " " + ingredient.unit + ""
-        })
+            if(!ingredient.quantity && !ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}</span>`;
+            else if(!ingredient.unit) singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity;
+            else singleIngredient.innerHTML = `<span class="ingredient-name">${ingredient.ingredient}:</span>` + " " + ingredient.quantity + " " + ingredient.unit + "";
+        }
 
         title.textContent = this.name;
         duration.innerHTML = '<i class="fa-solid fa-clock"></i>' + this.time + " min"
@@ -56,8 +56,8 @@ class Recipe {
 //Create a card for each recipe
 function createRecipeCard(recipes) {
     recipeSection.innerHTML = "";
-    recipes.forEach((recipe) => {
-        recipeSection.appendChild(new Recipe(recipe).createCard());
-    });
+    for(let recipe of recipes) {
+        recipeSection.appendChild(new Recipe(recipe).createCard())
+    }
     createArrays(recipes)
 };

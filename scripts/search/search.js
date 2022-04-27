@@ -51,6 +51,7 @@ function attributeItems(elements, index) {
 	lists[index].innerHTML = "";
 	elements.forEach(element => {
 		const span = document.createElement("span");
+		span.classList.add("span")
 		lists[index].appendChild(span);
 		span.textContent = element;
 	})
@@ -83,28 +84,42 @@ function filterArrays(elements, index) {
 
 //create tag and filter recipes
 function createTag(recipes) {
-	
 	lists.forEach((list, index) => {
-		const spans = list.getElementsByTagName("span")
-		for (let i = 0; i < spans.length; i++) {
-			spans[i].addEventListener("click", () => {
-				const tag = document.createElement("span");
+		const spans = Array.from(list.getElementsByTagName("span"));
+		spans.forEach(span => {
+			span.addEventListener("click", () => {
 				let filteredRecipes = [];
+				const tag = document.createElement("span");
 				tag.classList.add(`tag${index}`);
 				tagSection.appendChild(tag);
-				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
-				tagList.push(spans[i].innerHTML)
+				tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
+				tagList.push(span.innerHTML);
+
+				filteredRecipes = recipes.filter(recipe => {
+				/* 	const ingredientsFilter = recipe.ingredients.filter(({ingredient}) => {
+						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
+					}) */
+ 					const applianceFilter = recipe.appliance.includes(span.innerHTML);
+					const ustensilsFilter = recipe.ustensils.includes(span.innerHTML);
+					return applianceFilter || ustensilsFilter; 
+				})
+				
+				console.log("recette filtrées", filteredRecipes);
+				mainInputFiltering(filteredRecipes);
+				createRecipeCard(filteredRecipes);
+				deleteTag(tagList);
+			});
+		});
+	});
+};
 
 				//working 				
-/* 				var array = filteredRecipes.push(recipes.filter(recipe => {
+/*  				var array = filteredRecipes.push(recipes.filter(recipe => {
 					recipe.ingredients.filter(({ingredient}) => {
 						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
 					})
 					console.log(filteredRecipes)
 				}))
-
-
-
 
 				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) */
 
@@ -117,24 +132,6 @@ function createTag(recipes) {
 
 				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) */
 
-				filteredRecipes = recipes.filter(recipe => {
-				/* 	const ingredientsFilter = recipe.ingredients.filter(({ingredient}) => {
-						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
-					}) */
-					const applianceFilter = recipe.appliance.includes(spans[i].innerHTML);
-					const ustensilsFilter = recipe.ustensils.includes(spans[i].innerHTML);
-					return applianceFilter || ustensilsFilter; 
-				})
-
-				console.log("recette filtrées", filteredRecipes)
-				mainInputFiltering(filteredRecipes);
-				createRecipeCard(filteredRecipes);
-				deleteTag(tagList);
-			});
-		};
-	});
-};
-
 async function deleteTag(tagList) {
 	const { recipes } = await getRecipes();
 	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
@@ -146,7 +143,8 @@ async function deleteTag(tagList) {
 			crossTag.addEventListener("click", () => {
 				crossTag.parentElement.remove();
 				
-				if(tagList.length == 1) {
+				
+				if(tagList.length == 1) { //taglist n'est pas mis à jour dans createTag
 					tagList = [];
 					filteredRecipes = recipes;
 					createRecipeCard(filteredRecipes);
@@ -155,6 +153,8 @@ async function deleteTag(tagList) {
 				if(tagList.length > 1) {
 					tagList = [];
 					tagSection.childNodes.forEach(node => tagList.push(node.innerText))
+
+					console.log(tagList)
 
 					filteredRecipes = recipes.filter(recipe => {
 						const isUstensilInRecipe = tagList.forEach(tag => {

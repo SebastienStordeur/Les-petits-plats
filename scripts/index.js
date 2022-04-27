@@ -12,7 +12,7 @@ async function init() {
     mainInputFiltering(recipes); //recipes ou liste de recette maj
     advancedInputFiltering(ingredients, appliances, ustensils, recipes); //ou listes maj
     openList();
-    //closelist
+    //closeList()
 };
 
 init();

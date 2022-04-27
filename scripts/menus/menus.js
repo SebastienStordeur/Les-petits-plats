@@ -8,7 +8,7 @@ function openList() {
 }
 
 function closeList() {
-    document.addEventListener("click", () => {
-        
+    document.querySelector("html").addEventListener("click", (e) => {
+        if(!document.querySelector(".btn").classList.contains("btn")) alert("alarte")
     })
 }

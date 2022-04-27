@@ -95,11 +95,19 @@ function createTag(recipes) {
 				tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
 				tagList.push(span.innerHTML);
 
+/* 				var array = filteredRecipes.push(recipes.filter(recipe => {
+					recipe.ingredients.filter(({ingredient}) => {
+						if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe)
+					})
+				}))
+
+				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) */
+
 				filteredRecipes = recipes.filter(recipe => {
 				/* 	const ingredientsFilter = recipe.ingredients.filter(({ingredient}) => {
 						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
 					}) */
- 					const applianceFilter = recipe.appliance.includes(span.innerHTML);
+					const applianceFilter = recipe.appliance.includes(span.innerHTML);
 					const ustensilsFilter = recipe.ustensils.includes(span.innerHTML);
 					return applianceFilter || ustensilsFilter; 
 				})
@@ -143,7 +151,6 @@ async function deleteTag(tagList) {
 			crossTag.addEventListener("click", () => {
 				crossTag.parentElement.remove();
 				
-				
 				if(tagList.length == 1) { //taglist n'est pas mis à jour dans createTag
 					tagList = [];
 					filteredRecipes = recipes;
@@ -151,19 +158,23 @@ async function deleteTag(tagList) {
 				};
 
 				if(tagList.length > 1) {
+					console.log(tagList)
 					tagList = [];
 					tagSection.childNodes.forEach(node => tagList.push(node.innerText))
 
 					console.log(tagList)
 
 					filteredRecipes = recipes.filter(recipe => {
-						const isUstensilInRecipe = tagList.forEach(tag => {
+						const isUstensilInRecipe = recipe.ustensils.includes(tagList[0])/* tagList.forEach(tag => {
 							return recipe.ustensils.includes(tag)
-						})
+						}) */
+						const isApplianceInRecipe = recipe.appliance.includes(tagList[0])
 
-						return isUstensilInRecipe
+						return isApplianceInRecipe || isUstensilInRecipe 
 					})
 
+					tagList.forEach(tag => console.log(tag))
+					createRecipeCard(filteredRecipes)
 					console.log(tagList, filteredRecipes)
 				}
 

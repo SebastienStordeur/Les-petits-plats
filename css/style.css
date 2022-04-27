@@ -217,6 +217,15 @@ main {
     width: 90%;
   }
 }
+@media (max-width: 850px) {
+  .filter-section {
+    flex-direction: column;
+  }
+  .btn, .filter {
+    width: 100%;
+  }
+
+}
 
 /**** RECIPES ****/
 

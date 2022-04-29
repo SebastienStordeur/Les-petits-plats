@@ -16,6 +16,7 @@ function mainInputFiltering(recipes) {
 				const lowerCaseIngredients = recipe.ingredients.filter(({ ingredient }) => ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0
 				return  lowerCaseIngredients || lowerCaseName || lowerCaseDescription;
 			});
+			console.log(filteredRecipes)
 			createRecipeCard(filteredRecipes);
 			return filteredRecipes;
 		};
@@ -88,46 +89,29 @@ function createTag(recipes) {
 		const spans = Array.from(list.getElementsByTagName("span"));
 		spans.forEach(span => {
 			span.addEventListener("click", (event) => { // recuperer le data-type (data-type="ingredients")
-				// const dataType = ....
-				let filteredRecipes = [];
+				const dataType = index;
 				const tag = document.createElement("span");
 				tag.classList.add(`tag${index}`);
+				tag.setAttribute("datatype", dataType)
 				tagSection.appendChild(tag);
 				tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
 				tagList.push(span.innerHTML);
 
-
-				if(datatype === "ingredient") {
-					// filtrage du filterRecipes par ingredient
+				//datatypes => 0 = ingredietns, 1 = appareils, 2 = ustensils 
+				if(dataType === 0) {
+					filteredRecipes = []
+					filteredRecipes.push(recipes.filter(recipe => {
+						recipe.ingredients.filter(({ingredient}) => {
+							if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe)
+						})
+					}))
+					filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) //Ne filtre correctement que le premier élément 
 				} 
-				if(datatype === "appliance") {
-					// filtrage du filterRecipes par appliance
-				} 
-				if(datatype === "ustensils") {
-					// filtrage du filterRecipes par ustensils
-				} 
+				if(dataType === 1) filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
+				if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
 
+				console.log(filteredRecipes)
 
-				//Verifier que le tag n'éxiste pas déjà
-			var array = filteredRecipes.push(recipes.filter(recipe => {
-					recipe.ingredients.filter(({ingredient}) => {
-						if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe)
-					})
-				}))
-
-				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
-				console.log(filterRecipes)
-
-				filteredRecipes = recipes.filter(recipe => {
-				/* 	const ingredientsFilter = recipe.ingredients.filter(({ingredient}) => {
-						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
-					}) */
-					const applianceFilter = recipe.appliance.includes(span.innerHTML);
-					const ustensilsFilter = recipe.ustensils.includes(span.innerHTML);
-					return applianceFilter || ustensilsFilter; 
-				})
-				console.log(filterRecipes)
-				
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
 				deleteTag(tagList);
@@ -135,25 +119,6 @@ function createTag(recipes) {
 		});
 	});
 };
-
-				//working 				
-/*  				var array = filteredRecipes.push(recipes.filter(recipe => {
-					recipe.ingredients.filter(({ingredient}) => {
-						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
-					})
-					console.log(filteredRecipes)
-				}))
-
-				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) */
-
-				//A tester
-/*  				filteredRecipes.push(recipes.filter(recipe => {
-					return recipe.ingredients.filter(({ingredient}) => {
-						if(ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
-					})
-				}))
-
-				filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) */
 
 async function deleteTag(tagList) {
 	const { recipes } = await getRecipes();

@@ -1,7 +1,9 @@
+let filteredRecipes = [];
+
+
 //Filtering with main input
 function mainInputFiltering(recipes) {
     input.addEventListener("input", () => {
-        let filteredRecipes = [];
         if(input.value.length < 3) {
 			filteredRecipes = recipes;
 			createRecipeCard(recipes);
@@ -19,7 +21,6 @@ function mainInputFiltering(recipes) {
             createRecipeCard(filteredRecipes);
             return filteredRecipes;
         }
-
     })
 }
 
@@ -91,29 +92,37 @@ function createTag(recipes) {
         const spans = lists[index].getElementsByTagName("span");
         for(let i = 0; i < spans.length; i++) {
             spans[i].addEventListener("click", () => {
+                const dataType = index;
                 const tag = document.createElement("spans");
-                var filteredRecipes = [];
 				tag.classList.add(`tag${index}`);
+                tag.setAttribute("datatype", index)
 				tagSection.appendChild(tag);
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
             
+                //datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
+                if(dataType === 0) {
 
+                }
+                if(dataType === 1) {
+                    for(let recipe of recipes) {
+                        if(recipe.appliance.includes(spans[i].innerHTML)) {
+                            filteredRecipes.push(recipe)
+                        };
+                    };
+                    
+                    //filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
+                }
 
-                for(let recipe in recipes) {
-                    //const ingredientTag = ""
-                    const ingredientTag = () => {
-                        for(let ingredient of recipe.ingredients) {
-                            for(let ing of ingredient) {
-                                console.log(ing)
-                            }
+                if(dataType === 2) {
+                    for(let recipe of recipes) {
+                        if(recipe.ustensils.includes(spans[i].innerHTML)) {
+                            filteredRecipes.push(recipe)
                         }
                     }
-                    const applianceTag = recipe.appliance.includes(spans[i].innerHTML);
-                    const ustensilTag = recipe.ustensils.includes(spans[i].innerHTML);
-                    if(applianceTag || ustensilTag ||ingredientTag()) {
-                        filteredRecipes.push(recipe)
-                    }
                 }
+                console.log(filteredRecipes)
+
+
                 mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
                 //deleteTag(recipes); 

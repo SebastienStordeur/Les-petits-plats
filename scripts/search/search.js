@@ -9,7 +9,6 @@ function mainInputFiltering(recipes) {
 			createRecipeCard(recipes);
 			return filteredRecipes;
 		} else {
-			//Filtering recipes
 			filteredRecipes = recipes.filter(recipe => {
 				const lowerCaseName = recipe.name.toLowerCase().includes(input.value.toLowerCase());
                 const lowerCaseDescription = recipe.description.toLowerCase().includes(input.value.toLowerCase());
@@ -90,29 +89,30 @@ function createTag(recipes) {
 		spans.forEach(span => {
 			span.addEventListener("click", () => {
 				const dataType = index;
-
-				//ajout de condition pour savoir si le tag existe déjà dans le tableau, si oui, on ne fais rien, si non, alors classique
-
-				const tag = document.createElement("span");
-				tag.classList.add(`tag${index}`);
-				tag.setAttribute("datatype", dataType)
-				tagSection.appendChild(tag);
-				tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
-				tags.push(span.innerHTML);
-
-				//datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
-				if(dataType === 0) {
-					filteredRecipes = [];
-					filteredRecipes.push(recipes.filter(recipe => {
-						recipe.ingredients.filter(({ingredient}) => {
-							if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe);
-						});
-					}));
-					filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
-				} 
-				if(dataType === 1) filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
-				if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
-
+				const isFound = tags.find(elementTag => elementTag === span.innerHTML)
+				if(!isFound) {
+					const tag = document.createElement("span");
+					tag.classList.add(`tag${index}`);
+					tag.setAttribute("datatype", dataType)
+					tagSection.appendChild(tag);
+					tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
+					tags.push(span.innerHTML);
+	
+					//datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
+					if(dataType === 0) {
+						filteredRecipes = [];
+						filteredRecipes.push(recipes.filter(recipe => {
+							recipe.ingredients.filter(({ingredient}) => {
+								if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe);
+							});
+						}));
+						filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
+					} 
+					if(dataType === 1) filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
+					if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
+				}
+				else return;
+				console.log(tags)
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
 				deleteTag(tags);
@@ -121,7 +121,7 @@ function createTag(recipes) {
 	});
 };
 
-async function deleteTag(tagList) {
+async function deleteTag() {
 	const { recipes } = await getRecipes();
 	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
 
@@ -131,21 +131,21 @@ async function deleteTag(tagList) {
 			crossTag.addEventListener("click", () => {
 				crossTag.parentElement.remove();
 				
-				if(tagList.length == 1) {
-					tagList = [];
+				if(tags.length == 1) {
+					tags = [];
 					filteredRecipes = recipes;
 					createRecipeCard(filteredRecipes);
 				};
 
-				if(tagList.length > 1) {
-					tagList = [];
+				if(tags.length > 1) {
 					//const dataType = crossTag.parentElement.getAttribute("datatype");
 					tagSection.childNodes.forEach(node => {
-						tagList.push(node.innerText)
+						tags = []
+						tags.push(node.innerText)
 						//Getattribute datatype
 						console.log(node.getAttribute("datatype"))
 						const dataType = node.getAttribute("datatype");
-						if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(node.innerText))
+						if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(tags[0]))
 					})
 
 
@@ -160,7 +160,7 @@ async function deleteTag(tagList) {
 					} ) */
 
 					createRecipeCard(filteredRecipes)
-					console.log(tagList, filteredRecipes)
+					//console.log(tagList, filteredRecipes)
 				}
 			});
 		});

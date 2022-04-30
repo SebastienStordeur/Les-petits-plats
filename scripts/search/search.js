@@ -1,4 +1,4 @@
-let tagList = [];
+let tags = [];
 let filteredRecipes = [];
 
 //Filtering with main input
@@ -14,11 +14,11 @@ function mainInputFiltering(recipes) {
 				const lowerCaseName = recipe.name.toLowerCase().includes(input.value.toLowerCase());
                 const lowerCaseDescription = recipe.description.toLowerCase().includes(input.value.toLowerCase());
 				const lowerCaseIngredients = recipe.ingredients.filter(({ ingredient }) => ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0
-				return  lowerCaseIngredients || lowerCaseName || lowerCaseDescription;
+				return  lowerCaseIngredients | lowerCaseName | lowerCaseDescription;
 			});
-			console.log(filteredRecipes)
-			createRecipeCard(filteredRecipes);
-			return filteredRecipes;
+			if(!filteredRecipes.length > 0) recipeSection.innerHTML="<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>"
+			else createRecipeCard(filteredRecipes);
+			return filteredRecipes
 		};
 	});
 };
@@ -88,33 +88,34 @@ function createTag(recipes) {
 	lists.forEach((list, index) => {
 		const spans = Array.from(list.getElementsByTagName("span"));
 		spans.forEach(span => {
-			span.addEventListener("click", (event) => { // recuperer le data-type (data-type="ingredients")
+			span.addEventListener("click", () => {
 				const dataType = index;
+
+				//ajout de condition pour savoir si le tag existe déjà dans le tableau, si oui, on ne fais rien, si non, alors classique
+
 				const tag = document.createElement("span");
 				tag.classList.add(`tag${index}`);
 				tag.setAttribute("datatype", dataType)
 				tagSection.appendChild(tag);
 				tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
-				tagList.push(span.innerHTML);
+				tags.push(span.innerHTML);
 
-				//datatypes => 0 = ingredietns, 1 = appareils, 2 = ustensils 
+				//datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
 				if(dataType === 0) {
-					filteredRecipes = []
+					filteredRecipes = [];
 					filteredRecipes.push(recipes.filter(recipe => {
 						recipe.ingredients.filter(({ingredient}) => {
-							if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe)
-						})
-					}))
-					filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1) //Ne filtre correctement que le premier élément 
+							if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe);
+						});
+					}));
+					filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
 				} 
 				if(dataType === 1) filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
 				if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
 
-				console.log(filteredRecipes)
-
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
-				deleteTag(tagList);
+				deleteTag(tags);
 			});
 		});
 	});
@@ -123,7 +124,6 @@ function createTag(recipes) {
 async function deleteTag(tagList) {
 	const { recipes } = await getRecipes();
 	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
-	let filteredRecipes = [];
 
 	if(tagSection.innerHTML == "") return;
 	else {
@@ -138,27 +138,30 @@ async function deleteTag(tagList) {
 				};
 
 				if(tagList.length > 1) {
-					console.log(tagList)
 					tagList = [];
-					tagSection.childNodes.forEach(node => tagList.push(node.innerText))
-
-					console.log(tagList)
-
-					filteredRecipes = recipes.filter(recipe => {
-
-						const isUstensilInRecipe = recipe.ustensils.includes(tagList[0]) /* tagList.forEach(tag => {
-							return recipe.ustensils.includes(tag)
-						}) */
-						const isApplianceInRecipe = recipe.appliance.includes(tagList[0])
-
-						return isApplianceInRecipe || isUstensilInRecipe 
+					//const dataType = crossTag.parentElement.getAttribute("datatype");
+					tagSection.childNodes.forEach(node => {
+						tagList.push(node.innerText)
+						//Getattribute datatype
+						console.log(node.getAttribute("datatype"))
+						const dataType = node.getAttribute("datatype");
+						if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(node.innerText))
 					})
 
-					tagList.forEach(tag => console.log(tag))
+
+/*  					filteredRecipes = recipes.filter(recipe => { 
+
+						const isUstensilInRecipe = recipe.ustensils.includes(tagList[0])*/  /* tagList.forEach(tag => {
+							return recipe.ustensils.includes(tag)
+						})  */
+/* 						const isApplianceInRecipe = recipe.appliance.includes(tagList[0])
+
+						return isApplianceInRecipe || isUstensilInRecipe 
+					} ) */
+
 					createRecipeCard(filteredRecipes)
 					console.log(tagList, filteredRecipes)
 				}
-
 			});
 		});
 	};

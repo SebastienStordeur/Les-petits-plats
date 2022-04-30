@@ -100,8 +100,19 @@ function createTag(recipes) {
 				tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
             
                 //datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
-                if(dataType === 0) {
+/*                 if(dataType === 0) {
 
+                } */
+
+                if(dataType === 0) {
+                    filteredRecipes = [];
+                    filteredRecipes.push(() => {
+                        for(let recipe of recipes) {
+                            for(let ingredient of recipe.ingredient) {
+                                if(ingredient.ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
+                            }
+                        }
+                    })
                 }
                 if(dataType === 1) {
                     for(let recipe of recipes) {
@@ -118,6 +129,7 @@ function createTag(recipes) {
                         if(recipe.ustensils.includes(spans[i].innerHTML)) {
                             filteredRecipes.push(recipe)
                         }
+                        //return filteredRecipes;
                     }
                 }
                 console.log(filteredRecipes)

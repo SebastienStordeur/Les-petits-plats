@@ -24,8 +24,9 @@ header img {
 main {
   display: flex;
   justify-content: center;
-  width: 1440px;
+  max-width: 1440px;
   margin: auto;
+  overflow: hidden;
 }
 .main-block {
   width: 100%;
@@ -86,6 +87,7 @@ main {
   display: flex;
   width: 1440px;
   margin: auto;
+  overflow: hidden;
 }
 .btn {
   display: flex;
@@ -215,6 +217,14 @@ main {
     width: 90%;
   }
 }
+@media (max-width: 850px) {
+  .filter-section {
+    flex-direction: column;
+  }
+  .btn, .filter {
+    width: 100%;
+  }
+}
 
 /**** RECIPES ****/
 
@@ -225,6 +235,10 @@ main {
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 50px;
   overflow: hidden;
+}
+.error {
+  position: absolute;
+  width: 100%;
 }
 .recipe {
   width: 100%;

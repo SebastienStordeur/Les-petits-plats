@@ -112,7 +112,6 @@ function createTag(recipes) {
 					if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
 				}
 				else return;
-				console.log(tags)
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
 				deleteTag(tags);
@@ -124,30 +123,33 @@ function createTag(recipes) {
 async function deleteTag() {
 	const { recipes } = await getRecipes();
 	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
-
+	
 	if(tagSection.innerHTML == "") return;
 	else {
 		crossTags.forEach(crossTag => {
 			crossTag.addEventListener("click", () => {
 				crossTag.parentElement.remove();
 				
-				if(tags.length == 1) {
+				if(tags.length === 1) {
 					tags = [];
 					filteredRecipes = recipes;
 					createRecipeCard(filteredRecipes);
 				};
 
 				if(tags.length > 1) {
-					//const dataType = crossTag.parentElement.getAttribute("datatype");
-					tagSection.childNodes.forEach(node => {
-						tags = []
-						tags.push(node.innerText)
-						//Getattribute datatype
-						console.log(node.getAttribute("datatype"))
-						const dataType = node.getAttribute("datatype");
-						if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(tags[0]))
-					})
-
+					//remove the tag we clicked on from the tags array
+					tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
+					filteredRecipes = recipes
+					//filter recipes
+						tags.forEach(elementTag => {
+							console.log("tag", elementTag)
+							filteredRecipes = filteredRecipes.filter(recipe => {
+								return recipe.ustensils.includes(elementTag) || recipe.appliance.includes(elementTag)
+							})
+						})
+						//Problème = pour chaque tag, on refiltre à partir de la liste des recettes DE BASE
+						console.log(filteredRecipes)
+						createRecipeCard(filteredRecipes)
 
 /*  					filteredRecipes = recipes.filter(recipe => { 
 
@@ -158,9 +160,6 @@ async function deleteTag() {
 
 						return isApplianceInRecipe || isUstensilInRecipe 
 					} ) */
-
-					createRecipeCard(filteredRecipes)
-					//console.log(tagList, filteredRecipes)
 				}
 			});
 		});

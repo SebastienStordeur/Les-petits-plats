@@ -1,9 +1,10 @@
 let tags = [];
+let filteredRecipes = [];
 
 //Filtering with main input
 function mainInputFiltering(recipes) {
     input.addEventListener("input", () => {
-        let filteredRecipes = [];
+        //let filteredRecipes = [];
         if(input.value.length < 3) {
 			filteredRecipes = recipes;
 			createRecipeCard(recipes);
@@ -15,10 +16,12 @@ function mainInputFiltering(recipes) {
                 //const lowerCaseIngredient = recipe.ingredients.toLowerCase().includes(input.value.toLowerCase())
                 if(lowerCaseName || lowerCaseDescription) {
                     filteredRecipes.push(recipe);
-                }
+/*                     if(!filteredRecipes.length > 0) recipeSection.innerHTML="<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>"
+                    else createRecipeCard(filteredRecipes); */
+                }   else return;
+                console.log(filteredRecipes)
             }
-			if(!filteredRecipes.length > 0) recipeSection.innerHTML="<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>"
-			else createRecipeCard(filteredRecipes);
+
             return filteredRecipes;
         }
     })
@@ -91,55 +94,64 @@ function createTag(recipes) {
         const spans = lists[index].getElementsByTagName("span");
         for(let i = 0; i < spans.length; i++) {
             spans[i].addEventListener("click", () => {
-                
                 const dataType = index;
                 const isFound = tags.find(elementTag => elementTag === spans[i].innerHTML)
-                if(isFound) {
+                if(!isFound) {
                     const tag = document.createElement("spans");
                     tag.classList.add(`tag${index}`);
                     tag.setAttribute("datatype", index)
                     tagSection.appendChild(tag);
                     tag.innerHTML = spans[i].innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
                     tags.push(spans[i].innerHTML)
-                    console.log(tags)
-                
+
                     //datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
                     if(dataType === 0) {
-                        filteredRecipes.push(() => {
-                            for(let recipe of recipes) {
-                                for(let ingredient of recipe.ingredient) {
-                                    if(ingredient.ingredient.includes(spans[i].innerHTML)) return filteredRecipes.push(recipe)
-                                }
-                            }
-                        })
-                        console.log(filteredRecipes)
-                    }
-                    if(dataType === 1) {
+                        filteredRecipes = [];
                         for(let recipe of recipes) {
-                            if(recipe.appliance.includes(spans[i].innerHTML)) {
-                                filteredRecipes.push(recipe)
+                            for(let ingredient of recipe.ingredients) {
+                                if(ingredient.ingredient.includes(spans[i].innerHTML)) filteredRecipes.push(recipe);
                             };
                         };
-                        
-                        //filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
-                    }
-    
+                    };
+                    if(dataType === 1) {
+                        for(let recipe of recipes) {
+                            if(recipe.appliance.includes(spans[i].innerHTML)) filteredRecipes.push(recipe);
+                        };
+                    };
                     if(dataType === 2) {
                         for(let recipe of recipes) {
-                            if(recipe.ustensils.includes(spans[i].innerHTML)) {
-                                filteredRecipes.push(recipe)
-                            }
-                            //return filteredRecipes;
-                        }
-                    }
-                } else return;
-                
-                //console.log(filteredRecipes)
-
-
+                            if(recipe.ustensils.includes(spans[i].innerHTML)) filteredRecipes.push(recipe);
+                        };
+                    };
+                }
+                else return;
                 mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
-                //deleteTag(recipes); 
+                deleteTag(); 
+            });
+        };
+    };
+};
+
+async function deleteTag() {
+    const { recipes } = await getRecipes();
+	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
+
+    if(tagSection.innerHTML == "") return;
+    else {
+        for(let crossTag of crossTags) {
+            crossTag.addEventListener("click", () => {
+                crossTag.parentElement.remove();
+
+                if(tags.length === 1) {
+                    tags = [];
+                    filteredRecipes = recipes;
+                    createRecipeCard(filteredRecipes)
+                };
+
+                if(tags.length > 1) {
+
+                };
             });
         };
     };

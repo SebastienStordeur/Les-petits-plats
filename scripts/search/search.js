@@ -141,15 +141,19 @@ async function deleteTag() {
 					tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
 					filteredRecipes = recipes
 					//filter recipes
+					var test = recipes
 						tags.forEach(elementTag => {
 							console.log("tag", elementTag)
-							filteredRecipes = filteredRecipes.filter(recipe => {
+							test = test.filter(recipe => {
 								return recipe.ustensils.includes(elementTag) || recipe.appliance.includes(elementTag)
 							})
+							console.log("test", test)
 						})
+
+						//Fonctionne partiellement, suivant l'ordre de suppression des tags
 						//Problème = pour chaque tag, on refiltre à partir de la liste des recettes DE BASE
 						console.log(filteredRecipes)
-						createRecipeCard(filteredRecipes)
+						createRecipeCard(test)
 
 /*  					filteredRecipes = recipes.filter(recipe => { 
 

@@ -4,7 +4,7 @@ let filteredRecipes = [];
 //Filtering with main input
 function mainInputFiltering(recipes) {
     input.addEventListener("input", () => {
-        //let filteredRecipes = [];
+        filteredRecipes = []
         if(input.value.length < 3) {
 			filteredRecipes = recipes;
 			createRecipeCard(recipes);
@@ -14,18 +14,23 @@ function mainInputFiltering(recipes) {
                 const lowerCaseName = recipe.name.toLowerCase().includes(input.value.toLowerCase());
                 const lowerCaseDescription = recipe.description.toLowerCase().includes(input.value.toLowerCase());
                 //const lowerCaseIngredient = recipe.ingredients.toLowerCase().includes(input.value.toLowerCase())
-                if(lowerCaseName || lowerCaseDescription) {
-                    filteredRecipes.push(recipe);
-/*                     if(!filteredRecipes.length > 0) recipeSection.innerHTML="<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>"
-                    else createRecipeCard(filteredRecipes); */
-                }   else return;
-                console.log(filteredRecipes)
-            }
+                var lowerCaseIngredient;
+                for(let ingredient of recipe.ingredients) {
+                    lowerCaseIngredient = ingredient.ingredient.toLowerCase().includes(input.value.toLowerCase())
+                    if(lowerCaseIngredient /* | lowerCaseName | lowerCaseDescription */) filteredRecipes.push(recipe) //works
+                }
+                /* console.log(lowerCaseIngredient)
+                if( lowerCaseName | lowerCaseDescription  | lowerCaseIngredient ) {     
 
+                    filteredRecipes.push(recipe)
+                }; */
+                if(!filteredRecipes.length > 0) recipeSection.innerHTML="<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>"
+                else createRecipeCard(filteredRecipes);
+            };
             return filteredRecipes;
-        }
-    })
-}
+        };
+    });
+};
 
 //Create ingredients, ustensils and appliances arrays
 function createArrays(recipes) {

@@ -113,7 +113,7 @@ function createTag(recipes) {
 				}
 				else return;
 				mainInputFiltering(filteredRecipes);
-				createRecipeCard(filteredRecipes);
+				createRecipeCard(filteredRecipes); //
 				deleteTag(tags);
 			});
 		});
@@ -137,17 +137,18 @@ async function deleteTag() {
 				if(tags.length === 0) {
 					filteredRecipes = recipes;
 					createRecipeCard(filteredRecipes)
+					mainInputFiltering(filteredRecipes)
 				}
 				if(tags.length >= 1) {
 					filteredRecipes = recipes
 					tags.forEach(elementTag => {
 						filteredRecipes = filteredRecipes.filter(recipe => {
-							const checkIngredients = recipe.ingredients.filter(({ingredient}) => {
+							/* const checkIngredients = recipe.ingredients.filter(({ingredient}) => {
 								ingredient.includes(elementTag)
-							})
+							}) */
 							const checkAppliance = recipe.appliance.includes(elementTag);
 							const checkUstensils = recipe.ustensils.includes(elementTag);
-							return checkIngredients //|| checkAppliance || checkUstensils
+							return /* checkIngredients  || */ checkAppliance || checkUstensils
 						})
 						console.log("recettes filtrées",filteredRecipes)
 					})
@@ -157,7 +158,6 @@ async function deleteTag() {
 		});
 	};
 };
-
 
 
 

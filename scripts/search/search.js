@@ -120,6 +120,8 @@ function createTag(recipes) {
 	});
 };
 
+
+//double tableau tags + datatypes liée, création de tags pour l'un puis ajout du datatype dans le second tableau
 async function deleteTag() {
 	const { recipes } = await getRecipes();
 	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
@@ -129,42 +131,28 @@ async function deleteTag() {
 		crossTags.forEach(crossTag => {
 			crossTag.addEventListener("click", () => {
 				crossTag.parentElement.remove();
-				
-				if(tags.length === 1) {
-					tags = [];
+				//Filtrage des tags
+				tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
+				//si il reste des tags alors filtrage des recettes sinon filteredRecipe = recipes
+				if(tags.length === 0) {
 					filteredRecipes = recipes;
-					createRecipeCard(filteredRecipes);
-				};
-
-				if(tags.length > 1) {
-					//remove the tag we clicked on from the tags array
-					tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
-					filteredRecipes = recipes
-					//filter recipes
-					var test = recipes
-						tags.forEach(elementTag => {
-							console.log("tag", elementTag)
-							test = test.filter(recipe => {
-								return recipe.ustensils.includes(elementTag) || recipe.appliance.includes(elementTag)
-							})
-							console.log("test", test)
-						})
-
-						//Fonctionne partiellement, suivant l'ordre de suppression des tags
-						//Problème = pour chaque tag, on refiltre à partir de la liste des recettes DE BASE
-						console.log(filteredRecipes)
-						createRecipeCard(test)
-
-/*  					filteredRecipes = recipes.filter(recipe => { 
-
-						const isUstensilInRecipe = recipe.ustensils.includes(tagList[0])*/  /* tagList.forEach(tag => {
-							return recipe.ustensils.includes(tag)
-						})  */
-/* 						const isApplianceInRecipe = recipe.appliance.includes(tagList[0])
-
-						return isApplianceInRecipe || isUstensilInRecipe 
-					} ) */
+					createRecipeCard(filteredRecipes)
 				}
+				if(tags.length >= 1) {
+					filteredRecipes = recipes
+					tags.forEach(elementTag => {
+						filteredRecipes = filteredRecipes.filter(recipe => {
+							const checkIngredients = recipe.ingredients.filter(({ingredient}) => {
+								ingredient.includes(elementTag)
+							})
+							const checkAppliance = recipe.appliance.includes(elementTag);
+							const checkUstensils = recipe.ustensils.includes(elementTag);
+							return checkIngredients //|| checkAppliance || checkUstensils
+						})
+						console.log("recettes filtrées",filteredRecipes)
+					})
+					createRecipeCard(filteredRecipes)
+				};
 			});
 		});
 	};

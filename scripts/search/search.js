@@ -86,6 +86,20 @@ function filterArrays(elements, index) {
 	});
 };
 
+function datatypeFilter(span, dataType, recipes) {
+	if(dataType === 0) {
+		filteredRecipes = [];
+		filteredRecipes.push(recipes.filter(recipe => {
+			recipe.ingredients.filter(({ingredient}) => {
+				if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe);
+			});
+		}));
+		filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
+	} 
+	if(dataType === 1) filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
+	if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
+}
+
 //create tag and filter recipes
 function createTag(recipes) {
 	lists.forEach((list, index) => {
@@ -101,23 +115,11 @@ function createTag(recipes) {
 					tagSection.appendChild(tag);
 					tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
 					tags.push(span.innerHTML);
-	
-					//datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
-					if(dataType === 0) {
-						filteredRecipes = [];
-						filteredRecipes.push(recipes.filter(recipe => {
-							recipe.ingredients.filter(({ingredient}) => {
-								if(ingredient.includes(span.innerHTML)) return filteredRecipes.push(recipe);
-							});
-						}));
-						filteredRecipes = filteredRecipes.slice(0, filteredRecipes.length-1)
-					} 
-					if(dataType === 1) filteredRecipes = recipes.filter(recipe => recipe.appliance.includes(span.innerHTML))
-					if(dataType === 2) filteredRecipes = recipes.filter(recipe => recipe.ustensils.includes(span.innerHTML))
+					datatypeFilter(span, dataType, recipes)
 				}
 				else return;
 				mainInputFiltering(filteredRecipes);
-				createRecipeCard(filteredRecipes); //
+				createRecipeCard(filteredRecipes);
 				deleteTag(tags);
 			});
 		});
@@ -139,7 +141,7 @@ async function deleteTag() {
 				tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
 				//si il reste des tags alors filtrage des recettes sinon filteredRecipe = recipes
 				if(tags.length === 0) {
-					if(input.value.length != 0) filterWithInputValue(recipes)
+					if(input.value.length >= 3) filterWithInputValue(recipes)
 					else filteredRecipes = recipes
 					createRecipeCard(filteredRecipes)
 					mainInputFiltering(filteredRecipes)

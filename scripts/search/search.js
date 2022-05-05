@@ -9,18 +9,22 @@ function mainInputFiltering(recipes) {
 			createRecipeCard(recipes);
 			return filteredRecipes;
 		} else {
-			filteredRecipes = recipes.filter(recipe => {
-				const lowerCaseName = recipe.name.toLowerCase().includes(input.value.toLowerCase());
-                const lowerCaseDescription = recipe.description.toLowerCase().includes(input.value.toLowerCase());
-				const lowerCaseIngredients = recipe.ingredients.filter(({ ingredient }) => ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0
-				return  lowerCaseIngredients | lowerCaseName | lowerCaseDescription;
-			});
+			filterWithInputValue(recipes)
 			if(!filteredRecipes.length > 0) recipeSection.innerHTML="<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>"
 			else createRecipeCard(filteredRecipes);
 			return filteredRecipes
 		};
 	});
 };
+
+function filterWithInputValue(recipes) {
+	filteredRecipes = recipes.filter(recipe => {
+		const lowerCaseName = recipe.name.toLowerCase().includes(input.value.toLowerCase());
+		const lowerCaseDescription = recipe.description.toLowerCase().includes(input.value.toLowerCase());
+		const lowerCaseIngredients = recipe.ingredients.filter(({ ingredient }) => ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0
+		return  lowerCaseIngredients | lowerCaseName | lowerCaseDescription;
+	});
+}
 
 //Create ingredients, ustensils and appliances arrays
 function createArrays(recipes) {
@@ -123,7 +127,7 @@ function createTag(recipes) {
 
 //double tableau tags + datatypes liée, création de tags pour l'un puis ajout du datatype dans le second tableau
 async function deleteTag() {
-	const { recipes } = await getRecipes();
+	const { recipes } = await getRecipes(); //hors fonction
 	const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
 	
 	if(tagSection.innerHTML == "") return;
@@ -135,20 +139,23 @@ async function deleteTag() {
 				tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
 				//si il reste des tags alors filtrage des recettes sinon filteredRecipe = recipes
 				if(tags.length === 0) {
-					filteredRecipes = recipes;
+					if(input.value.length != 0) filterWithInputValue(recipes)
+					else filteredRecipes = recipes
 					createRecipeCard(filteredRecipes)
 					mainInputFiltering(filteredRecipes)
 				}
 				if(tags.length >= 1) {
-					filteredRecipes = recipes
+					if(input.value.length != 0) filterWithInputValue(recipes)
+					else filteredRecipes = recipes
 					tags.forEach(elementTag => {
 						filteredRecipes = filteredRecipes.filter(recipe => {
-							/* const checkIngredients = recipe.ingredients.filter(({ingredient}) => {
+/* 							const checkIngredients = recipe.ingredients.filter(({ingredient}) => { 
+								console.log(ingredient)
 								ingredient.includes(elementTag)
 							}) */
 							const checkAppliance = recipe.appliance.includes(elementTag);
 							const checkUstensils = recipe.ustensils.includes(elementTag);
-							return /* checkIngredients  || */ checkAppliance || checkUstensils
+							return /* checkIngredients   || */ checkAppliance || checkUstensils
 						})
 						console.log("recettes filtrées",filteredRecipes)
 					})
@@ -158,67 +165,3 @@ async function deleteTag() {
 		});
 	};
 };
-
-
-
-/* let tags = [];
-let recipesInitial = [];
-let recipeFiltre = []
-
-<div data-name="Lait de Coco">lait de coco</div>
-
-
-document.querySelector('.tags').addEventListener('click', event => {
-  const element = deleteTag(event) // il faut acceder l'event pour recupere l'element
-  if (element !== null) {
-     const recipes = filterRecipes()
-     if (recipes) {
-       displayRecipes(recipes)
-     }
-  }
-})
-
-document.querySelector('.tags-de-la-liste').addEventListener('click', event => {
-  addTag(event)
-})
-
-function addTag(event) {
-  const dataName = sdsd;
-  const found = tags.find(tag => tag === dataName);
-  
-  if (!found) {
-    tags.push(dataName)
-  }
- 
-  return;
-}
-
-function deleteTag(event) {
-  const dataName = sdsd;
-  const found = tags.find(tag => tag === dataName);
-  
-  if (found) {
-    // Suppression du tag du tableau tags
-    return found;
-  }
-  return null;
-}
-
-function filterRecipes() {
-  if(tags.length > 0) {
-    // filtrage des donnees
-  }
-    if(tags.length > 0) {
-    // filtrage des donnees
-  }
-  
-  return;
-}
-
-function displayRecipe() {
-  if (recipeFiltres.length > 0) {
-    // function d'affichage avec recipeFiltre
-  } else {
-     // function d'affichage avec recipeInitial
-  }
-} */

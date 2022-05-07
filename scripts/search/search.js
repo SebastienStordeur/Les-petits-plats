@@ -24,7 +24,7 @@ function filterWithInputValue(recipes) {
 		const lowerCaseIngredients = recipe.ingredients.filter(({ ingredient }) => ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0
 		return  lowerCaseIngredients | lowerCaseName | lowerCaseDescription;
 	});
-}
+};
 
 //Create ingredients, ustensils and appliances arrays
 function createArrays(recipes) {
@@ -116,7 +116,7 @@ function createTag(recipes) {
 				else return;
 				mainInputFiltering(filteredRecipes);
 				createRecipeCard(filteredRecipes);
-				deleteTag(tags);
+				deleteTag();
 			});
 		});
 	});
@@ -135,26 +135,29 @@ async function deleteTag() {
 				tags = tags.filter(elementTag => { return elementTag != crossTag.parentElement.innerText })
 				//si il reste des tags alors filtrage des recettes sinon filteredRecipe = recipes
 				if(tags.length === 0) {
-					if(input.value.length >= 3) filterWithInputValue(recipes)
-					else filteredRecipes = recipes
-					createRecipeCard(filteredRecipes)
-					mainInputFiltering(filteredRecipes)
-				}
+					if(input.value.length >= 3) filterWithInputValue(recipes);
+					else filteredRecipes = recipes;
+					createRecipeCard(filteredRecipes);
+					mainInputFiltering(recipes);
+				};
+				//il reste juste à faire en sorte que les valeurs de la barres de recherches soit actives lors d'une suppression de tag
 				if(tags.length >= 1) {
-					if(input.value.length >= 3) filterWithInputValue(recipes)
-					else filteredRecipes = recipes
+					if(input.value.length >= 3) filterWithInputValue(recipes);
+					else filteredRecipes = recipes;
 
 					const tagList = document.querySelectorAll(".tag");
 					
 					tagList.forEach((tag) => {
 						if(tag.classList.contains("tag0")) {
 							filteredRecipes = filteredRecipes.filter(recipe => recipe.ingredients.some(
-								({ingredient}) => ingredient.includes(tag.innerText)))
-						}
-						if(tag.classList.contains("tag1")) filteredRecipes = filteredRecipes.filter(recipe => recipe.appliance.includes(tag.innerText))
-						if(tag.classList.contains("tag2")) filteredRecipes = filteredRecipes.filter(recipe => recipe.ustensils.includes(tag.innerText))
+								({ingredient}) => ingredient.includes(tag.innerText)));
+						};
+						if(tag.classList.contains("tag1")) filteredRecipes = filteredRecipes.filter(recipe => recipe.appliance.includes(tag.innerText));
+						if(tag.classList.contains("tag2")) filteredRecipes = filteredRecipes.filter(recipe => recipe.ustensils.includes(tag.innerText));
 					})
-					createRecipeCard(filteredRecipes)
+					mainInputFiltering(recipes);
+					createRecipeCard(filteredRecipes);
+					
 				};
 			});
 		});

@@ -1,5 +1,6 @@
 let tags = [];
 let filteredRecipes = [];
+let filteredRecipesWithTags = [];
 
 //Filtering with main input
 function mainInputFiltering(recipes) {
@@ -116,7 +117,6 @@ function createTag(recipes) {
 
                     //datatypes => 0 = ingredients, 1 = appareils, 2 = ustensils 
                     if (dataType === 0) {
-                        filteredRecipes = [];
                         for (let recipe of recipes) {
                             for (let ingredient of recipe.ingredients) {
                                 if (ingredient.ingredient.includes(spans[i].innerHTML)) filteredRecipes.push(recipe);
@@ -144,8 +144,6 @@ function createTag(recipes) {
 };
 
 
-//FUNCTION A REFAIRE ENTIEREMENT
-
 async function deleteTag() {
     const { recipes } = await getRecipes();
     const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
@@ -155,37 +153,62 @@ async function deleteTag() {
         for (let crossTag of crossTags) {
             crossTag.addEventListener("click", () => {
                 crossTag.parentElement.remove();
+                const tagList = document.querySelectorAll(".tag");
 
-                //filtrage de tags
-                for (let i = 0; i < tags.length; i++){
+                //filtrage du tableau de tags //ne prends pas en compte le premier filtrage 
+/*                  for (let i = 0; i < tags.length; i++){
                     if(tags[i] == crossTag.parentElement.innerText) {
-                        tags.splice(i, 1);
+                        return tags.splice(i, 1);
                     };
-                };
+                }; */
 
+                //si après suppression, il n'y a plus de tags alors on récupère toute les recettes puis filtrage avec ce qu'il y a dans l'input
                 if (tags.length === 0) {
-                    if(input.value.length >= 3) {
-                        filteredRecipes = [];
-                        filterWithInputValue(recipes)
-                    }
+                    if(input.value.length >= 3) filterWithInputValue(recipes);
                     else filteredRecipes = recipes;
-                    createRecipeCard(filteredRecipes)
-                    mainInputFiltering(recipes)
+                    createRecipeCard(recipes);
+                    mainInputFiltering(recipes);
                 };
+                
 
-                if(tags.lengths >= 1) {
-                    if(input.value.length >= 3) {
-                        filteredRecipes = []
-                        filterWithInputValue(recipes)
+                //Si il reste des tags alors filtrage des recettes
+                if(tags.length > 1) {
+                    if(input.value.length >= 3) filterWithInputValue(recipes)
+                    else filteredRecipes = recipes
+                    for(let tag of tagList) {
+                        if(tag.classList.contains("tag0")) {
+                            for(let recipe of filteredRecipes) {
+                                for(let ingredient of recipe.ingredients) {
+                                    if(ingredient.ingredient.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
+                                };
+                                console.log(tag.innerText, filteredRecipesWithTags)
+                            };
+                        };
+
+                        if(tag.classList.contains("tag1")) {
+                            for(let recipe of filteredRecipes) {
+                                if(recipe.appliance.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
+                            };
+                        };
+
+                        if(tag.classList.contains("tag2")) {
+                            for(let recipe of filteredRecipes) {
+                                if(recipe.ustensils.includes(tag.innerText)) filteredRecipesWithTags.push(recipe)
+                            };
+                        };
+
+                        filteredRecipes = filteredRecipesWithTags;
+                        console.log("filteredRecipewithtags", filteredRecipesWithTags)
+                        console.log("filteredrecipe", filteredRecipes)
+                        filteredRecipesWithTags = [];
+                        
                     }
-                    else filteredRecipes = recipes;
-
-
                 }
-
-
-
-            });
+                    console.log(filteredRecipes)
+                    mainInputFiltering(filteredRecipes);
+                    createRecipeCard(filteredRecipes);
+                }
+            );
         };
     };
 };

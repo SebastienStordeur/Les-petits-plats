@@ -137,8 +137,7 @@ function createTag(recipes) {
           tag.classList.add(`tag${index}`, "tag");
           tag.setAttribute("datatype", dataType);
           tagSection.appendChild(tag);
-          tag.innerHTML =
-            span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
+          tag.innerHTML = span.innerHTML + "<i class='fa-solid fa-xmark delete-tag'></i>";
           tags.push(span.innerHTML);
           datatypeFilter(span, dataType, recipes);
         } else return;
@@ -151,7 +150,8 @@ function createTag(recipes) {
 }
 
 async function deleteTag() {
-  const { recipes } = await getRecipes(); //hors fonction
+  const { recipes } = await getRecipes();
+
   const crossTags = document.querySelectorAll(".delete-tag"); //Croix pour suppression de tags
 
   if (tagSection.innerHTML == "") return;
@@ -170,7 +170,8 @@ async function deleteTag() {
           createRecipeCard(filteredRecipes);
           mainInputFiltering(recipes);
         }
-        //il reste juste à faire en sorte que les valeurs de la barres de recherches soit actives lors d'une suppression de tag
+
+        //Si il reste des tags alors filtrage de recettes
         if (tags.length >= 1) {
           if (input.value.length >= 3) filterWithInputValue(recipes);
           else filteredRecipes = recipes;

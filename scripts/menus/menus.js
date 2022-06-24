@@ -8,7 +8,12 @@ function openList() {
 }
 
 function closeList() {
-    document.querySelector("html").addEventListener("click", (e) => {
-        if(!document.querySelector(".btn").classList.contains("btn")) alert("alarte")
-    })
-}
+    const closingListButtons = document.querySelectorAll(".closing-list");
+
+    closingListButtons.forEach(closingListButton => {
+        closingListButton.addEventListener("click", () => {
+            closingListButton.parentElement.style.display = "none";
+            closingListButton.parentElement.previousElementSibling.style.display = "flex";
+        });
+    });
+};

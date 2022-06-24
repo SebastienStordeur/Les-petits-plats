@@ -161,7 +161,6 @@ async function deleteTag() {
                 }
                 tags = newTagArray
                 newTagArray = []
-                console.log("tags", tags)
 
                 //si après suppression, il n'y a plus de tags alors on récupère toute les recettes puis filtrage avec ce qu'il y a dans l'input
                 if (tags.length === 0) {

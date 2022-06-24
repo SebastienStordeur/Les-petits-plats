@@ -100,7 +100,7 @@ function filterArrays(elements, index) {
 };
 
 function createTag(recipes) {
-    let filteredRecipes = [];
+    filteredRecipes = [];
     for (let index = 0; index < lists.length; index++) {
         const spans = lists[index].getElementsByTagName("span");
         for (let i = 0; i < spans.length; i++) {
@@ -150,38 +150,39 @@ async function deleteTag() {
 
     if (tagSection.innerHTML == "") return;
     else {
-        for (let crossTag of crossTags) {
+        for (let crossTag of crossTags) { 
             crossTag.addEventListener("click", () => {
                 crossTag.parentElement.remove();
-                const tagList = document.querySelectorAll(".tag");
-
-                //filtrage du tableau de tags //ne prends pas en compte le premier filtrage 
-/*                  for (let i = 0; i < tags.length; i++){
-                    if(tags[i] == crossTag.parentElement.innerText) {
-                        return tags.splice(i, 1);
-                    };
-                }; */
+                
+                //filtrage du tableau de tags
+                let newTagArray = [];
+                for(let i = 0; i <tags.length; i++) {
+                    if(tags[i] !== crossTag.parentElement.innerText) newTagArray.push(tags[i])
+                }
+                tags = newTagArray
+                newTagArray = []
 
                 //si après suppression, il n'y a plus de tags alors on récupère toute les recettes puis filtrage avec ce qu'il y a dans l'input
                 if (tags.length === 0) {
                     if(input.value.length >= 3) filterWithInputValue(recipes);
                     else filteredRecipes = recipes;
-                    createRecipeCard(recipes);
+                    createRecipeCard(filteredRecipes);
                     mainInputFiltering(recipes);
                 };
                 
-
                 //Si il reste des tags alors filtrage des recettes
-                if(tags.length > 1) {
+                if(tags.length >= 1) {
                     if(input.value.length >= 3) filterWithInputValue(recipes)
-                    else filteredRecipes = recipes
+                    else filteredRecipes = recipes;
+
+                    const tagList = document.querySelectorAll(".tag");
+
                     for(let tag of tagList) {
                         if(tag.classList.contains("tag0")) {
                             for(let recipe of filteredRecipes) {
                                 for(let ingredient of recipe.ingredients) {
                                     if(ingredient.ingredient.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
                                 };
-                                console.log(tag.innerText, filteredRecipesWithTags)
                             };
                         };
 
@@ -198,15 +199,13 @@ async function deleteTag() {
                         };
 
                         filteredRecipes = filteredRecipesWithTags;
-                        console.log("filteredRecipewithtags", filteredRecipesWithTags)
-                        console.log("filteredrecipe", filteredRecipes)
                         filteredRecipesWithTags = [];
-                        
+                        mainInputFiltering(filteredRecipes);
+                        createRecipeCard(filteredRecipes)
                     }
                 }
-                    console.log(filteredRecipes)
-                    mainInputFiltering(filteredRecipes);
-                    createRecipeCard(filteredRecipes);
+                    
+                    //createRecipeCard(filteredRecipes);
                 }
             );
         };

@@ -8,7 +8,12 @@ function openList() {
 };
 
 function closeList() {
-    document.addEventListener("click", () => {
-        
-    });
+    const closingListButtons = document.querySelectorAll(".closing-list");
+
+    for(let closingListButton of closingListButtons) {
+        closingListButton.addEventListener("click", () => {
+            closingListButton.parentElement.style.display = "none";
+            closingListButton.parentElement.previousElementSibling.style.display = "flex";
+        })
+    }
 };

@@ -98,15 +98,15 @@ function filterArrays(elements, index) {
 function datatypeFilter(span, dataType, recipes) {
     if (dataType === 0) {
         filteredRecipes = [];
-        filteredRecipes = recipes.filter((recipe) =>
+        return filteredRecipes = recipes.filter((recipe) =>
             recipe.ingredients.some(({ ingredient }) => ingredient.includes(span.innerHTML))
         );
     };
     if (dataType === 1) {
-        filteredRecipes = recipes.filter((recipe) => recipe.appliance.includes(span.innerHTML));
+        return filteredRecipes = recipes.filter((recipe) => recipe.appliance.includes(span.innerHTML));
     };
     if (dataType === 2) {
-        filteredRecipes = recipes.filter((recipe) =>recipe.ustensils.includes(span.innerHTML));
+        return filteredRecipes = recipes.filter((recipe) =>recipe.ustensils.includes(span.innerHTML));
     };
 };
 
@@ -150,18 +150,23 @@ async function deleteTag() {
                     return elementTag != crossTag.parentElement.innerText;
                 });
 
-                if (input.value.length >= 3) filterWithInputValue(recipes);
-                else filteredRecipes = recipes;
+                filteredRecipes = recipes;
 
                 //si il reste des tags alors filtrage des recettes avec la valeur de l'input
-                if (tags.length === 0) mainInputFiltering(recipes);
+                if (tags.length === 0) {
+                    filterWithInputValue(recipes);
+                    mainInputFiltering(recipes);
+                };
 
                 //Si il reste des tags alors filtrage de recettes
                 if (tags.length >= 1) {
                     filterByTag();
-                    mainInputFiltering(recipes);
+                    let postFilterData = filteredRecipes
+                    if(input.value.length >= 3) {
+                        filterWithInputValue(postFilterData)
+                        mainInputFiltering(postFilterData);
+                    };
                 };
-
                 createRecipeCard(filteredRecipes);
             });
         });
@@ -173,16 +178,16 @@ function filterByTag() {
 
     tagList.forEach(tag => {
         if (tag.classList.contains("tag0")) {
-            filteredRecipes = filteredRecipes.filter((recipe) =>
+            return filteredRecipes = filteredRecipes.filter((recipe) =>
                 recipe.ingredients.some(({ ingredient }) => ingredient.includes(tag.innerText)));
         };
 
         if (tag.classList.contains("tag1")) {
-            filteredRecipes = filteredRecipes.filter((recipe) => recipe.appliance.includes(tag.innerText));
+            return filteredRecipes = filteredRecipes.filter((recipe) => recipe.appliance.includes(tag.innerText));
         };
 
         if (tag.classList.contains("tag2")) {
-            filteredRecipes = filteredRecipes.filter((recipe) => recipe.ustensils.includes(tag.innerText));
+            return filteredRecipes = filteredRecipes.filter((recipe) => recipe.ustensils.includes(tag.innerText));
         };
     });
 };

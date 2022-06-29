@@ -34,7 +34,6 @@ function filterWithInputValue(recipes) {
         const lowerCaseIngredient = filteredIngredients.length > 0;
         if (lowerCaseName || lowerCaseDescription || lowerCaseIngredient) {
             filteredRecipes.push(recipe);
-            console.log(filteredRecipes)
         };
     };
 };
@@ -163,8 +162,6 @@ async function deleteTag() {
                 tags = newTagArray
                 newTagArray = []
 
-                //filteredRecipes = recipes
-
                 //si après suppression, il n'y a plus de tags alors on récupère toute les recettes puis filtrage avec ce qu'il y a dans l'input
                 if (tags.length === 0) {
                     if(input.value.length >= 3) filterWithInputValue(recipes);
@@ -174,18 +171,11 @@ async function deleteTag() {
                 
                 //Si il reste des tags alors filtrage des recettes
                 if(tags.length >= 1) {
-                    /* if(input.value.length >= 3) filterWithInputValue(recipes)
-                    else */ filteredRecipes = recipes;
-                    //filteredRecipes = recipes
+                    filteredRecipes = recipes;
                     filterByTag();
                     let postFilterData = filteredRecipes
-                    console.log(postFilterData)
+                    if(input.value.length >= 3) filterInput(postFilterData)
                     mainInputFiltering(postFilterData)
-                    if(input.value.length >= 3) {
-                        filterWithInputValue(postFilterData)
-                    } 
-                    
-                    
                 };
                 createRecipeCard(filteredRecipes);
             });
@@ -220,4 +210,13 @@ function filterByTag() {
         filteredRecipes = filteredRecipesWithTags;
         filteredRecipesWithTags = [];
     };
+};
+
+function filterInput(recipes) {
+    filteredRecipes = recipes.filter((recipe) => {
+        const lowerCaseName = recipe.name.toLowerCase().includes(input.value.toLowerCase());
+        const lowerCaseDescription = recipe.description.toLowerCase().includes(input.value.toLowerCase());
+        const lowerCaseIngredients = recipe.ingredients.filter(({ ingredient }) =>ingredient.toLowerCase().includes(input.value.toLowerCase())).length > 0;
+        return lowerCaseIngredients | lowerCaseName | lowerCaseDescription;
+    });
 };

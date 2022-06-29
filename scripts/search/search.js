@@ -32,8 +32,9 @@ function filterWithInputValue(recipes) {
             }
         }
         const lowerCaseIngredient = filteredIngredients.length > 0;
-        if (lowerCaseName | lowerCaseDescription | lowerCaseIngredient) {
+        if (lowerCaseName || lowerCaseDescription || lowerCaseIngredient) {
             filteredRecipes.push(recipe);
+            console.log(filteredRecipes)
         };
     };
 };
@@ -162,49 +163,61 @@ async function deleteTag() {
                 tags = newTagArray
                 newTagArray = []
 
+                //filteredRecipes = recipes
+
                 //si après suppression, il n'y a plus de tags alors on récupère toute les recettes puis filtrage avec ce qu'il y a dans l'input
                 if (tags.length === 0) {
                     if(input.value.length >= 3) filterWithInputValue(recipes);
                     else filteredRecipes = recipes;
-                    createRecipeCard(filteredRecipes);
                     mainInputFiltering(recipes);
                 };
                 
                 //Si il reste des tags alors filtrage des recettes
                 if(tags.length >= 1) {
-                    if(input.value.length >= 3) filterWithInputValue(recipes)
-                    else filteredRecipes = recipes;
-
-                    const tagList = document.querySelectorAll(".tag");
-
-                    for(let tag of tagList) {
-                        if(tag.classList.contains("tag0")) {
-                            for(let recipe of filteredRecipes) {
-                                for(let ingredient of recipe.ingredients) {
-                                    if(ingredient.ingredient.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
-                                };
-                            };
-                        };
-
-                        if(tag.classList.contains("tag1")) {
-                            for(let recipe of filteredRecipes) {
-                                if(recipe.appliance.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
-                            };
-                        };
-
-                        if(tag.classList.contains("tag2")) {
-                            for(let recipe of filteredRecipes) {
-                                if(recipe.ustensils.includes(tag.innerText)) filteredRecipesWithTags.push(recipe)
-                            };
-                        };
-
-                        filteredRecipes = filteredRecipesWithTags;
-                        filteredRecipesWithTags = [];
-                        mainInputFiltering(filteredRecipes); 
-                    };
-                    createRecipeCard(filteredRecipes);
+                    /* if(input.value.length >= 3) filterWithInputValue(recipes)
+                    else */ filteredRecipes = recipes;
+                    //filteredRecipes = recipes
+                    filterByTag();
+                    let postFilterData = filteredRecipes
+                    console.log(postFilterData)
+                    mainInputFiltering(postFilterData)
+                    if(input.value.length >= 3) {
+                        filterWithInputValue(postFilterData)
+                    } 
+                    
+                    
                 };
+                createRecipeCard(filteredRecipes);
             });
         };
+    };
+};
+
+function filterByTag() {
+    const tagList = document.querySelectorAll(".tag");
+
+    for(let tag of tagList) {
+        if(tag.classList.contains("tag0")) {
+            for(let recipe of filteredRecipes) {
+                for(let ingredient of recipe.ingredients) {
+                    if(ingredient.ingredient.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
+                };
+            };
+        };
+
+        if(tag.classList.contains("tag1")) {
+            for(let recipe of filteredRecipes) {
+                if(recipe.appliance.includes(tag.innerText)) filteredRecipesWithTags.push(recipe);
+            };
+        };
+
+        if(tag.classList.contains("tag2")) {
+            for(let recipe of filteredRecipes) {
+                if(recipe.ustensils.includes(tag.innerText)) filteredRecipesWithTags.push(recipe)
+            };
+        };
+
+        filteredRecipes = filteredRecipesWithTags;
+        filteredRecipesWithTags = [];
     };
 };

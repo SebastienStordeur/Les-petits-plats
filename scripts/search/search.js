@@ -10,12 +10,7 @@ function mainInputFiltering(recipes) {
             return filteredRecipes;
         }   else {
                 filterWithInputValue(recipes);
-                console.log(filteredRecipes)
                 if (!filteredRecipes.length > 0) recipeSection.innerHTML = "<span class='error'>Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc</span>";
-/*                 else if(filteredRecipes.length>0 && tags.length>0) {
-                    filterByTag()
-                    createRecipeCard(filteredRecipes)
-                } */
                 else createRecipeCard(filteredRecipes);
             return filteredRecipes;
         }
